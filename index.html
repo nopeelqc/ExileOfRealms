@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>webgame by Nopee</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="main-container">
+        
+        <nav class="navbar">
+            <div class="logo-container">
+                <img src="logovip.png" alt="Logo">
+            </div>
+            
+            <div class="nav-menu">
+                <div class="nav-item active">Trang Chủ</div>
+                <div class="nav-item">Giới Thiệu</div>
+                <div class="nav-item">Diễn Đàn</div>
+                <div class="nav-item">Tin Tức</div>
+                <div class="nav-item">Nạp Tiền</div>
+                <div class="nav-item">Hướng Dẫn</div>
+                <div class="nav-item">Chơi Ngay</div>
+                
+                <div class="music-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18V5l12-2v13"/>
+                        <circle cx="6" cy="18" r="3"/>
+                        <circle cx="18" cy="16" r="3"/>
+                    </svg>
+                </div>
+            </div>
+        </nav>
+        
+        <div class="social-sidebar">
+            <div class="social-icon facebook">
+                <i class="fab fa-facebook-f"></i>
+            </div>
+            <div class="social-icon github">
+                <i class="fab fa-github"></i>
+            </div>
+            <div class="social-icon instagram">
+                <i class="fab fa-instagram"></i>
+            </div>
+            <div class="social-icon tiktok">
+                <i class="fab fa-tiktok"></i>
+            </div>
+        </div>
+        
+        <div class="content-area">
+            <div class="main-logo">
+                <img src="logovip1.png" alt="Main Logo" width="150" height="150">
+            </div>
+            
+            <div class="game-title" style="font-size: 45px; font-weight: 600; color: #E6D4C2;">
+                Exile of Realms
+            </div>
+
+            <div class="studio-credit">
+                by NOPEE studio
+            </div>
+            
+            <div class="platform-buttons">
+                <button class="platform-btn" onclick="handlePlatform('PC')">
+                    <i class="fas fa-desktop"></i>
+                    <span>PC</span>
+                </button>
+                <button class="platform-btn" onclick="handlePlatform('MOBILE')">
+                    <i class="fas fa-mobile-alt"></i>
+                    <span>MOBILE</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section id="hero">
+        <video id="heroVideoBg" autoplay loop muted playsinline>
+            <source src="video1.mp4" type="video/mp4">
+        </video>
+        <img id="heroImgBg" src="background2.jpg" alt="background image">
+    </section>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

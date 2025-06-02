@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giới Thiệu - Exile of Realms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%);
+            min-height: 100vh;
+            color: #E2E8F0;
+        }
+
+        .hero-section {
+            background: url('../background2.jpg') center/cover;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.8));
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .navbar {
+            background: rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(249, 115, 22, 0.3);
+        }
+
+        .nav-item {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-item:hover {
+            color: #F97316;
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #F97316;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #F97316;
+            border-radius: 1px;
+        }
+
+        .game-logo {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .intro-card {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.6));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(249, 115, 22, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .intro-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(249, 115, 22, 0.2);
+            border-color: rgba(249, 115, 22, 0.5);
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, #F97316, #EA580C);
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(249, 115, 22, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(249, 115, 22, 0.8);
+            }
+        }
+
+        .developer-card {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.7));
+            border: 2px solid #F97316;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .developer-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(249, 115, 22, 0.1), transparent);
+            animation: rotate 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #F97316, #EA580C);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:hover {
+            background: linear-gradient(135deg, #EA580C, #DC2626);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(249, 115, 22, 0.4);
+        }
+
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #F97316, transparent);
+            margin: 3rem 0;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar fixed top-0 w-full z-50 py-4 px-8">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center space-x-4">
+                <img src="../logovip.png" alt="Logo" class="w-12 h-12">
+                <span class="text-xl font-bold text-white">Exile of Realms</span>
+            </div>
+            
+            <div class="hidden md:flex space-x-8 text-white font-semibold">
+                <a href="../index.html" class="nav-item">Trang Chủ</a>
+                <div class="nav-item active">Giới Thiệu</div>
+                <div class="nav-item">Diễn Đàn</div>
+                <div class="nav-item">Tin Tức</div>
+                <div class="nav-item">Nạp Tiền</div>
+                <div class="nav-item">Hướng Dẫn</div>
+                <div class="nav-item">Chơi Ngay</div>
+            </div>
+
+            <button class="back-button text-white px-6 py-2 rounded-lg font-semibold" onclick="goBack()">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Quay Lại
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-screen flex items-center justify-center pt-20">
+        <div class="hero-content text-center max-w-4xl mx-auto px-8">
+            <div class="game-logo mb-8">
+                <img src="../logovip1.png" alt="Game Logo" class="w-32 h-32 mx-auto mb-6">
+            </div>
+            
+            <h1 class="text-6xl md:text-7xl font-bold text-white mb-4">
+                Exile of <span class="text-orange-500">Realms</span>
+            </h1>
+            
+            <p class="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
+                Hành trình phiêu lưu đầy thử thách trong thế giới huyền bí
+            </p>
+            
+            <div class="flex justify-center space-x-4 text-orange-400">
+                <div class="text-center">
+                    <div class="text-3xl font-bold">2025</div>
+                    <div class="text-sm">Ra Mắt</div>
+                </div>
+                <div class="w-px bg-gray-600 mx-4"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold">RPG</div>
+                    <div class="text-sm">Thể Loại</div>
+                </div>
+                <div class="w-px bg-gray-600 mx-4"></div>
+                <div class="text-center">
+                    <div class="text-3xl font-bold">PC</div>
+                    <div class="text-sm">Nền Tảng</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Game Introduction -->
+    <section class="py-20 px-8">
+        <div class="max-w-6xl mx-auto">
+            <h2 class="text-4xl font-bold text-center mb-12 text-white">
+                Về <span class="text-orange-500">Game</span>
+            </h2>
+            
+            <div class="intro-card rounded-2xl p-8 mb-12">
+                <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                    <strong class="text-orange-400">Exile of Realms</strong> là một trò chơi nhập vai hành động đầy thử thách, 
+                    nơi người chơi sẽ hóa thân thành một chiến binh dũng cảm trong thế giới fantasy huyền bí.
+                </p>
+                
+                <p class="text-lg leading-relaxed text-gray-300 mb-6">
+                    Trong game, bạn sẽ điều khiển nhân vật của mình khám phá những vùng đất rộng lớn, 
+                    đối mặt với vô số quái vật nguy hiểm và vượt qua những màn đấu được thiết kế tỉ mỉ. 
+                    Mỗi thử thách sẽ đòi hỏi bạn phải có chiến thuật thông minh và kỹ năng điều khiển điêu luyện.
+                </p>
+
+                <p class="text-lg leading-relaxed text-gray-300">
+                    Hãy chuẩn bị tinh thần cho một cuộc phiêu lưu không giới hạn, nơi mỗi quyết định của bạn 
+                    sẽ định hình số phận của nhân vật và cả thế giới xung quanh!
+                </p>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <!-- Game Features -->
+            <h3 class="text-3xl font-bold text-center mb-10 text-white">
+                Tính Năng <span class="text-orange-500">Nổi Bật</span>
+            </h3>
+            
+            <div class="feature-grid">
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-sword text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Chiến Đấu Kịch Tính</h4>
+                    <p class="text-gray-300">Hệ thống combat đa dạng với nhiều kỹ năng và combo độc đáo</p>
+                </div>
+                
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-dragon text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Quái Vật Đa Dạng</h4>
+                    <p class="text-gray-300">Đối mặt với hàng trăm loại quái vật với sức mạnh và khả năng khác nhau</p>
+                </div>
+                
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-map text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Thế Giới Rộng Lớn</h4>
+                    <p class="text-gray-300">Khám phá những vùng đất huyền bí với cảnh quan tuyệt đẹp</p>
+                </div>
+                
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-trophy text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Thử Thách Đa Cấp</h4>
+                    <p class="text-gray-300">Các màn chơi được thiết kế từ dễ đến khó với độ phức tạp tăng dần</p>
+                </div>
+                
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-magic text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Phép Thuật & Kỹ Năng</h4>
+                    <p class="text-gray-300">Hệ thống magic và skill phong phú để nâng cấp nhân vật</p>
+                </div>
+                
+                <div class="intro-card rounded-xl p-6">
+                    <div class="feature-icon w-16 h-16 rounded-full flex items-center justify-center mb-4">
+                        <i class="fas fa-gamepad text-2xl text-white"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-orange-400 mb-3">Điều Khiển Mượt Mà</h4>
+                    <p class="text-gray-300">Trải nghiệm chơi game mượt mà với điều khiển tối ưu</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Developer Section -->
+    <section class="py-20 px-8 bg-gradient-to-r from-gray-900 to-gray-800">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-12 text-white">
+                Về <span class="text-orange-500">Developer</span>
+            </h2>
+            
+            <div class="developer-card rounded-2xl p-8 max-w-2xl mx-auto">
+                <div class="mb-6">
+                    <div class="w-24 h-24 mx-auto mb-4 bg-orange-500 rounded-full flex items-center justify-center">
+                        <i class="fas fa-user-tie text-3xl text-white"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-orange-400 mb-2">Lương Quốc Cường</h3>
+                    <p class="text-orange-300 font-semibold mb-4">(Nopee Studio)</p>
+                </div>
+                
+                <div class="text-left space-y-4 text-gray-300">
+                    <p class="leading-relaxed">
+                        <strong class="text-orange-400">Lương Quốc Cường</strong> là một sinh viên năm nhất ngành 
+                        <span class="text-orange-300 font-semibold">Công Nghệ Thông Tin</span> với niềm đam mê mãnh liệt 
+                        về phát triển game và lập trình.
+                    </p>
+                    
+                    <p class="leading-relaxed">
+                        Với tinh thần <span class="text-orange-300 font-semibold">tự học cao</span> và khát khao 
+                        <span class="text-orange-300 font-semibold">học hỏi không ngừng</span>, anh đã tự mình 
+                        nghiên cứu và phát triển dự án game đầu tay này.
+                    </p>
+                    
+                    <p class="leading-relaxed">
+                        <strong class="text-orange-400">Exile of Realms</strong> không chỉ là một sản phẩm game, 
+                        mà còn là minh chứng cho sự nỗ lực, sáng tạo và đam mê của một developer trẻ tuổi 
+                        trong hành trình theo đuổi ước mơ công nghệ.
+                    </p>
+                </div>
+                
+                <div class="mt-8 p-4 bg-orange-500/10 rounded-lg border border-orange-500/30">
+                    <p class="text-orange-300 font-semibold text-center">
+                        "Mỗi dòng code là một bước tiến, mỗi thử thách là một cơ hội học hỏi"
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-20 px-8 text-center">
+        <div class="max-w-4xl mx-auto">
+            <h2 class="text-4xl font-bold mb-6 text-white">
+                Sẵn Sàng Cho <span class="text-orange-500">Cuộc Phiêu Lưu</span>?
+            </h2>
+            <p class="text-xl text-gray-300 mb-8">
+                Hãy tham gia cùng chúng tôi trong hành trình khám phá thế giới Exile of Realms
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="back-button px-8 py-4 rounded-lg font-bold text-lg" onclick="goToGame()">
+                    <i class="fas fa-play mr-2"></i>
+                    Chơi Ngay
+                </button>
+                <button class="bg-transparent border-2 border-orange-500 text-orange-500 px-8 py-4 rounded-lg font-bold text-lg hover:bg-orange-500 hover:text-white transition-all duration-300" onclick="goBack()">
+                    <i class="fas fa-home mr-2"></i>
+                    Về Trang Chủ
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function goBack() {
+            window.location.href = '../index.html';
+        }
+
+        function goToGame() {
+            // Redirect to game or show coming soon message
+            alert('Game sẽ sớm ra mắt! Hãy theo dõi để cập nhật thông tin mới nhất.');
+        }
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Add scroll effect to navbar
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(0, 0, 0, 0.9)';
+            } else {
+                navbar.style.background = 'rgba(0, 0, 0, 0.3)';
+            }
+        });
+    </script>
+</body>
+</html>

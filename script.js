@@ -26,6 +26,54 @@ const qrAltText = {
     tiktok: 'TikTok QR'
 };
 
+const backgroundMusic = document.getElementById('backgroundMusic');
+const musicButton = document.querySelector('.music-btn');
+const musicMuteSlash = document.getElementById('musicMuteSlash');
+let musicPlayedOnce = false; 
+
+function toggleMusic() {
+    if (!backgroundMusic || !musicMuteSlash) {
+        console.error('Music elements not found!');
+        return;
+    }
+
+    if (backgroundMusic.paused) {
+        backgroundMusic.play()
+            .then(() => {
+                console.log('Music playing');
+                musicMuteSlash.style.display = 'none';
+            })
+            .catch(error => {
+                console.error('Error playing music:', error);
+            });
+    } else {
+        backgroundMusic.pause();
+        console.log('Music paused');
+        musicMuteSlash.style.display = 'block';
+    }
+}
+
+musicButton.addEventListener('click', function(event) {
+    event.stopPropagation(); 
+    console.log('Music button clicked');
+    toggleMusic();
+    musicPlayedOnce = true; 
+});
+
+document.addEventListener('click', function playMusicOnClick() {
+    if (!musicPlayedOnce && backgroundMusic && backgroundMusic.paused) {
+        backgroundMusic.play()
+            .then(() => {
+                console.log('Music started on first click');
+                if (musicMuteSlash) musicMuteSlash.style.display = 'none';
+                musicPlayedOnce = true; 
+            })
+            .catch(error => {
+                console.error('Autoplay was prevented. User interaction is needed.', error);
+            });
+    }
+}); 
+
 function handlePlatform(platform) {
     console.log(`${platform} platform selected`);
     
@@ -206,10 +254,6 @@ document.querySelector('.social-sidebar').addEventListener('mouseleave', functio
             hideAllQR();
         }
     }, 300);
-});
-
-document.querySelector('.music-btn').addEventListener('click', function() {
-    console.log('Music button clicked');
 });
 
 document.addEventListener('click', function(e) {

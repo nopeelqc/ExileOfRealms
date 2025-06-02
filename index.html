@@ -12,8 +12,11 @@
     <div class="main-container">
         
         <nav class="navbar">
-            <div class="logo-container">
-                <img src="logovip.png" alt="Logo">
+            <div class="navbar-left-section">
+                <div class="logo-container">
+                    <img src="logovip.png" alt="Logo">
+                </div>
+                <div class="navbar-game-title">Exile of Realms</div> 
             </div>
             
             <div class="nav-menu">
@@ -26,10 +29,11 @@
                 <div class="nav-item">Chơi Ngay</div>
                 
                 <div class="music-btn">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="musicIcon">
                         <path d="M9 18V5l12-2v13"/>
                         <circle cx="6" cy="18" r="3"/>
                         <circle cx="18" cy="16" r="3"/>
+                        <line id="musicMuteSlash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2.5" style="display:none;"/>
                     </svg>
                 </div>
             </div>
@@ -83,6 +87,10 @@
         <img id="heroImgBg" src="background2.jpg" alt="background image">
     </section>
 
+    <audio id="backgroundMusic" loop>
+        <source src="sound.mp3" type="audio/mpeg">
+        Trình duyệt của bạn không hỗ trợ phát âm thanh.
+    </audio>
 
     <script src="script.js"></script>
 </body>

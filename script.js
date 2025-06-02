@@ -53,18 +53,24 @@ function toggleMusic() {
     }
 }
 
-musicButton.addEventListener('click', function(event) {
-    event.stopPropagation(); 
-    console.log('Music button clicked');
-    toggleMusic();
-    musicPlayedOnce = true; 
-});
+if (musicButton) {
+    musicButton.addEventListener('click', function(event) {
+        event.stopPropagation(); 
+        console.log('Music button clicked');
+        toggleMusic();
+        musicPlayedOnce = true; 
+    });
+}
 
-document.addEventListener('click', function playMusicOnClick() {
+
+document.addEventListener('click', function playMusicOnClick(event) {
     if (!musicPlayedOnce && backgroundMusic && backgroundMusic.paused) {
+        const isMusicButtonDescendant = event.target.closest('.music-btn');
+        if(isMusicButtonDescendant) return; 
+
         backgroundMusic.play()
             .then(() => {
-                console.log('Music started on first click');
+                console.log('Music started on first general click');
                 if (musicMuteSlash) musicMuteSlash.style.display = 'none';
                 musicPlayedOnce = true; 
             })
@@ -78,8 +84,9 @@ function handlePlatform(platform) {
     console.log(`${platform} platform selected`);
     
     if (platform === 'PC') {
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
+        showSection('Trang Chủ');
+        const navItemsToActivate = document.querySelectorAll('.nav-item');
+        navItemsToActivate.forEach(item => {
             item.classList.remove('active');
             if (item.textContent.trim() === 'Chơi Ngay') {
                 item.classList.add('active');
@@ -92,6 +99,7 @@ function handlePlatform(platform) {
         });
         
         console.log('Chuyển đến tab Chơi Ngay');
+        showNotification('🚀 Sẵn sàng trải nghiệm Exile of Realms trên PC!');
         
     } else if (platform === 'MOBILE') {
         showMobileComingSoonModal();
@@ -99,6 +107,9 @@ function handlePlatform(platform) {
 }
 
 function showMobileComingSoonModal() {
+    const existingModal = document.querySelector('.mobile-modal');
+    if (existingModal) return; 
+
     const modal = document.createElement('div');
     modal.className = 'mobile-modal';
     modal.innerHTML = `
@@ -140,16 +151,22 @@ function closeMobileModal() {
 }
 
 function followForUpdates() {
-    const followBtn = document.querySelector('.follow-btn');
-    followBtn.innerHTML = '<i class="fas fa-check"></i> Đã Theo Dõi!';
-    followBtn.style.background = '#10B981';
+    const followBtn = document.querySelector('.mobile-modal .follow-btn');
+    if (followBtn) {
+        followBtn.innerHTML = '<i class="fas fa-check"></i> Đã Theo Dõi!';
+        followBtn.disabled = true;
+        followBtn.style.background = '#10B981';
+    }
     setTimeout(() => {
         closeMobileModal();
-        showNotification('🔔 Cảm ơn! Bạn sẽ nhận được thông báo khi game mobile ra mắt');
+        showNotification('🔔 Cảm ơn! Bạn sẽ nhận được thông báo khi game mobile ra mắt.');
     }, 1000);
 }
 
 function showNotification(message) {
+    const existingNotification = document.querySelector('.notification');
+    if(existingNotification) existingNotification.remove();
+
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
@@ -165,7 +182,7 @@ function showNotification(message) {
         setTimeout(() => {
             notification.remove();
         }, 300);
-    }, 3000);
+    }, 3500);
 }
 
 function showSocialQR(platform) {
@@ -194,13 +211,24 @@ function showSocialQR(platform) {
     document.body.appendChild(qr);
     
     const socialIcon = document.querySelector(`.social-icon.${platform}`);
-    const rect = socialIcon.getBoundingClientRect();
-    
-    qr.style.left = rect.right + 20 + 'px';
-    qr.style.top = rect.top + 'px';
+    if (socialIcon) {
+        const rect = socialIcon.getBoundingClientRect();
+        if (window.innerWidth <= 768) {
+             qr.style.left = '50%';
+             qr.style.top = '50%';
+             qr.style.transform = 'translate(-50%, -50%)';
+        } else {
+            qr.style.left = rect.right + 15 + 'px';
+            qr.style.top = rect.top + (rect.height / 2) - (qr.offsetHeight / 2) + 'px';
+        }
+    }
     
     setTimeout(() => {
         qr.classList.add('show');
+        if (window.innerWidth > 768 && socialIcon) {
+            const rect = socialIcon.getBoundingClientRect();
+            qr.style.top = rect.top + (rect.height / 2) - (qr.offsetHeight / 2) + 'px';
+        }
     }, 10);
 }
 
@@ -212,9 +240,11 @@ function hideAllQR() {
 function followSocial(platform) {
     const url = socialLinks[platform];
     if (url) {
-        const btn = document.querySelector('.follow-link-btn');
-        btn.style.transform = 'scale(0.95)';
-        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang chuyển...';
+        const btn = document.querySelector('.social-qr-popup .follow-link-btn');
+        if(btn) {
+            btn.style.transform = 'scale(0.95)';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang chuyển...';
+        }
         
         setTimeout(() => {
             window.open(url, '_blank');
@@ -223,21 +253,58 @@ function followSocial(platform) {
     }
 }
 
+const mainPageContentArea = document.querySelector('.content-area');
+const mainPageHeroSection = document.getElementById('hero');
+const introductionContentWrapper = document.getElementById('introduction-content-wrapper');
+const mainSocialSidebar = document.querySelector('.social-sidebar');
+
+function showSection(sectionNameToDisplay) {
+    if (mainPageContentArea) mainPageContentArea.style.display = 'none';
+    if (mainPageHeroSection) mainPageHeroSection.style.display = 'none';
+    if (introductionContentWrapper) introductionContentWrapper.style.display = 'none';
+    if (mainSocialSidebar) mainSocialSidebar.style.display = 'none';
+
+    if (sectionNameToDisplay === 'Trang Chủ') {
+        if (mainPageContentArea) mainPageContentArea.style.display = 'block'; 
+        if (mainPageHeroSection) mainPageHeroSection.style.display = 'block';
+        if (mainSocialSidebar) mainSocialSidebar.style.display = 'flex'; 
+        window.scrollTo(0, 0);
+    } else if (sectionNameToDisplay === 'Giới Thiệu') {
+        if (introductionContentWrapper) introductionContentWrapper.style.display = 'block';
+        window.scrollTo(0, 0);
+    }
+}
+
 document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', function() {
-        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => {
+            i.classList.remove('active');
+            i.style.transform = 'scale(1)'; 
+        });
         this.classList.add('active');
-        console.log(`Navigation: ${this.textContent}`);
+        const sectionName = this.textContent.trim();
+        console.log(`Navigation: Chuyển đến ${sectionName}`);
+
+        showSection(sectionName);
+
+        if (sectionName === 'Chơi Ngay') {
+            handlePlatform('PC');
+        } else if (sectionName !== 'Trang Chủ' && sectionName !== 'Giới Thiệu') {
+            showNotification(`"${sectionName}" hiện chưa có nội dung. Vui lòng quay lại sau!`);
+        }
     });
 });
 
 document.querySelectorAll('.social-icon').forEach(icon => {
-    const platform = icon.className.split(' ')[1];
+    const platform = icon.className.split(' ')[1]; 
+    icon.setAttribute('data-platform', platformNames[platform] || platform);
+
     icon.addEventListener('mouseenter', function() {
         showSocialQR(platform);
         console.log(`Hover ${platform} - showing QR`);
     });
-    icon.addEventListener('click', function() {
+    icon.addEventListener('click', function(event) {
+        event.stopPropagation(); 
         showSocialQR(platform);
         console.log(`Click ${platform} - showing QR`);
         this.style.transform = 'scale(1.3)';
@@ -247,20 +314,25 @@ document.querySelectorAll('.social-icon').forEach(icon => {
     });
 });
 
-document.querySelector('.social-sidebar').addEventListener('mouseleave', function() {
-    setTimeout(() => {
-        const qrPopup = document.querySelector('.social-qr-popup:hover');
-        if (!qrPopup) {
-            hideAllQR();
-        }
-    }, 300);
-});
+const socialSidebarElement = document.querySelector('.social-sidebar');
+if (socialSidebarElement) {
+    socialSidebarElement.addEventListener('mouseleave', function() {
+        setTimeout(() => {
+            const qrPopup = document.querySelector('.social-qr-popup:hover');
+            const socialIconHovered = document.querySelector('.social-icon:hover');
+            if (!qrPopup && !socialIconHovered) {
+                hideAllQR();
+            }
+        }, 300); 
+    });
+}
+
 
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-backdrop')) {
         closeMobileModal();
     }
-    if (!e.target.closest('.social-qr-popup') && !e.target.closest('.social-icon')) {
+    if (!e.target.closest('.social-icon') && !e.target.closest('.social-qr-popup')) {
         hideAllQR();
     }
 });
@@ -269,5 +341,14 @@ document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
         closeMobileModal();
         hideAllQR();
+    }
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    showSection('Trang Chủ');
+    document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+    const homeNavItem = Array.from(document.querySelectorAll('.nav-item')).find(el => el.textContent.trim() === 'Trang Chủ');
+    if (homeNavItem) {
+        homeNavItem.classList.add('active');
     }
 });

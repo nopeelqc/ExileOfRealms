@@ -7,16 +7,16 @@ const socialLinks = {
 
 const platformNames = {
     facebook: 'Facebook',
-    github: 'GitHub',
+    github: 'GitHub', 
     instagram: 'Instagram',
     tiktok: 'TikTok'
 };
 
 const qrImages = {
-    facebook: 'linkfb.png',
-    github: 'linkgh.png',
-    instagram: 'linkins.png',
-    tiktok: 'linktt.png'
+    facebook: 'qr/linkfb.png',
+    github: 'qr/linkgh.png',
+    instagram: 'qr/linkins.png',
+    tiktok: 'qr/linktt.png'
 };
 
 const qrAltText = {
@@ -29,7 +29,7 @@ const qrAltText = {
 const backgroundMusic = document.getElementById('backgroundMusic');
 const musicButton = document.querySelector('.music-btn');
 const musicMuteSlash = document.getElementById('musicMuteSlash');
-let musicPlayedOnce = false;
+let musicPlayedOnce = false; 
 
 function toggleMusic() {
     if (!backgroundMusic || !musicMuteSlash) {
@@ -55,46 +55,52 @@ function toggleMusic() {
 
 if (musicButton) {
     musicButton.addEventListener('click', function(event) {
-        event.stopPropagation();
+        event.stopPropagation(); 
         console.log('Music button clicked');
         toggleMusic();
-        musicPlayedOnce = true;
+        musicPlayedOnce = true; 
     });
 }
+
 
 document.addEventListener('click', function playMusicOnClick(event) {
     if (!musicPlayedOnce && backgroundMusic && backgroundMusic.paused) {
         const isMusicButtonDescendant = event.target.closest('.music-btn');
-        if(isMusicButtonDescendant) return;
+        if(isMusicButtonDescendant) return; 
 
         backgroundMusic.play()
             .then(() => {
                 console.log('Music started on first general click');
                 if (musicMuteSlash) musicMuteSlash.style.display = 'none';
-                musicPlayedOnce = true;
+                musicPlayedOnce = true; 
             })
             .catch(error => {
                 console.error('Autoplay was prevented. User interaction is needed.', error);
             });
     }
-});
+}); 
 
 function handlePlatform(platform) {
     console.log(`${platform} platform selected`);
-
+    
     if (platform === 'PC') {
         showSection('Trang Chủ');
         const navItemsToActivate = document.querySelectorAll('.nav-item');
         navItemsToActivate.forEach(item => {
             item.classList.remove('active');
-            if (item.textContent.trim() === 'Trang Chủ') {
+            if (item.textContent.trim() === 'Chơi Ngay') {
                 item.classList.add('active');
+                item.style.transform = 'scale(1.1)';
+                item.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    item.style.transform = 'scale(1)';
+                }, 300);
             }
         });
-
-        console.log('Chuyển đến tab Trang Chủ (PC)');
+        
+        console.log('Chuyển đến tab Chơi Ngay');
         showNotification('🚀 Sẵn sàng trải nghiệm Exile of Realms trên PC!');
-
+        
     } else if (platform === 'MOBILE') {
         showMobileComingSoonModal();
     }
@@ -102,7 +108,7 @@ function handlePlatform(platform) {
 
 function showMobileComingSoonModal() {
     const existingModal = document.querySelector('.mobile-modal');
-    if (existingModal) return;
+    if (existingModal) return; 
 
     const modal = document.createElement('div');
     modal.className = 'mobile-modal';
@@ -164,13 +170,13 @@ function showNotification(message) {
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
-
+    
     document.body.appendChild(notification);
-
+    
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
-
+    
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => {
@@ -181,7 +187,7 @@ function showNotification(message) {
 
 function showSocialQR(platform) {
     hideAllQR();
-
+    
     const qr = document.createElement('div');
     qr.className = 'social-qr-popup';
     qr.innerHTML = `
@@ -201,9 +207,9 @@ function showSocialQR(platform) {
             </button>
         </div>
     `;
-
+    
     document.body.appendChild(qr);
-
+    
     const socialIcon = document.querySelector(`.social-icon.${platform}`);
     if (socialIcon) {
         const rect = socialIcon.getBoundingClientRect();
@@ -216,7 +222,7 @@ function showSocialQR(platform) {
             qr.style.top = rect.top + (rect.height / 2) - (qr.offsetHeight / 2) + 'px';
         }
     }
-
+    
     setTimeout(() => {
         qr.classList.add('show');
         if (window.innerWidth > 768 && socialIcon) {
@@ -239,7 +245,7 @@ function followSocial(platform) {
             btn.style.transform = 'scale(0.95)';
             btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang chuyển...';
         }
-
+        
         setTimeout(() => {
             window.open(url, '_blank');
             hideAllQR();
@@ -249,58 +255,22 @@ function followSocial(platform) {
 
 const mainPageContentArea = document.querySelector('.content-area');
 const mainPageHeroSection = document.getElementById('hero');
-const introductionContentPlaceholder = document.getElementById('introduction-content-placeholder');
+const introductionContentWrapper = document.getElementById('introduction-content-wrapper');
 const mainSocialSidebar = document.querySelector('.social-sidebar');
-
-async function loadIntroductionContent() {
-    if (introductionContentPlaceholder) {
-        if (introductionContentPlaceholder.innerHTML.trim() !== '') {
-            console.log('Introduction content already loaded.');
-            return;
-        }
-        try {
-            const response = await fetch('gioithieu/gioithieu.html');
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const htmlContent = await response.text();
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = htmlContent;
-            const actualIntroContent = tempDiv.querySelector('#introduction-content-wrapper');
-
-            if (actualIntroContent) {
-                introductionContentPlaceholder.appendChild(actualIntroContent);
-                console.log('Introduction content loaded into placeholder.');
-            } else {
-                console.error('Could not find #introduction-content-wrapper within fetched gioithieu.html.');
-                introductionContentPlaceholder.innerHTML = '<p>Lỗi: Không tìm thấy nội dung giới thiệu phù hợp.</p>';
-            }
-        } catch (error) {
-            console.error('Failed to load introduction content:', error);
-            if (introductionContentPlaceholder) {
-                introductionContentPlaceholder.innerHTML = '<p>Lỗi tải nội dung giới thiệu. Vui lòng thử lại sau.</p>';
-            }
-        }
-    } else {
-        console.error('Introduction placeholder (introduction-content-placeholder) not found in index.html');
-    }
-}
 
 function showSection(sectionNameToDisplay) {
     if (mainPageContentArea) mainPageContentArea.style.display = 'none';
     if (mainPageHeroSection) mainPageHeroSection.style.display = 'none';
-    if (introductionContentPlaceholder) introductionContentPlaceholder.style.display = 'none';
+    if (introductionContentWrapper) introductionContentWrapper.style.display = 'none';
     if (mainSocialSidebar) mainSocialSidebar.style.display = 'none';
 
     if (sectionNameToDisplay === 'Trang Chủ') {
-        if (mainPageContentArea) mainPageContentArea.style.display = 'block';
+        if (mainPageContentArea) mainPageContentArea.style.display = 'block'; 
         if (mainPageHeroSection) mainPageHeroSection.style.display = 'block';
-        if (mainSocialSidebar) mainSocialSidebar.style.display = 'flex';
+        if (mainSocialSidebar) mainSocialSidebar.style.display = 'flex'; 
         window.scrollTo(0, 0);
     } else if (sectionNameToDisplay === 'Giới Thiệu') {
-        if (introductionContentPlaceholder) {
-            introductionContentPlaceholder.style.display = 'block';
-        }
+        if (introductionContentWrapper) introductionContentWrapper.style.display = 'block';
         window.scrollTo(0, 0);
     }
 }
@@ -309,7 +279,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
     item.addEventListener('click', function() {
         document.querySelectorAll('.nav-item').forEach(i => {
             i.classList.remove('active');
-            i.style.transform = 'scale(1)';
+            i.style.transform = 'scale(1)'; 
         });
         this.classList.add('active');
         const sectionName = this.textContent.trim();
@@ -318,7 +288,6 @@ document.querySelectorAll('.nav-item').forEach(item => {
         showSection(sectionName);
 
         if (sectionName === 'Chơi Ngay') {
-            showSection('Trang Chủ');
             handlePlatform('PC');
         } else if (sectionName !== 'Trang Chủ' && sectionName !== 'Giới Thiệu') {
             showNotification(`"${sectionName}" hiện chưa có nội dung. Vui lòng quay lại sau!`);
@@ -327,7 +296,7 @@ document.querySelectorAll('.nav-item').forEach(item => {
 });
 
 document.querySelectorAll('.social-icon').forEach(icon => {
-    const platform = icon.className.split(' ')[1];
+    const platform = icon.className.split(' ')[1]; 
     icon.setAttribute('data-platform', platformNames[platform] || platform);
 
     icon.addEventListener('mouseenter', function() {
@@ -335,7 +304,7 @@ document.querySelectorAll('.social-icon').forEach(icon => {
         console.log(`Hover ${platform} - showing QR`);
     });
     icon.addEventListener('click', function(event) {
-        event.stopPropagation();
+        event.stopPropagation(); 
         showSocialQR(platform);
         console.log(`Click ${platform} - showing QR`);
         this.style.transform = 'scale(1.3)';
@@ -354,9 +323,10 @@ if (socialSidebarElement) {
             if (!qrPopup && !socialIconHovered) {
                 hideAllQR();
             }
-        }, 300);
+        }, 300); 
     });
 }
+
 
 document.addEventListener('click', function(e) {
     if (e.target.classList.contains('modal-backdrop')) {
@@ -375,7 +345,6 @@ document.addEventListener('keydown', function(e) {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadIntroductionContent();
     showSection('Trang Chủ');
     document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
     const homeNavItem = Array.from(document.querySelectorAll('.nav-item')).find(el => el.textContent.trim() === 'Trang Chủ');

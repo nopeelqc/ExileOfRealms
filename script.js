@@ -87,7 +87,7 @@ function handlePlatform(platform) {
                               document.getElementById('introduction-content-wrapper').style.display !== 'none';
         
         if (isOnIntroPage) {
-            showNotification('🚀 Sẵn sàng trải nghiệm Exile of Realms trên PC!');
+            window.location.href = 'game.html';
         } else {
             const navItems = document.querySelectorAll('.nav-item');
             let playNowItem = null;
@@ -106,9 +106,7 @@ function handlePlatform(platform) {
                     playNowItem.style.transform = 'scale(1)';
                 }, 300);
             }
-            showSection('Trang Chủ');
-            console.log('Chuyển đến tab Chơi Ngay (thực chất là Trang Chủ với hiệu ứng)');
-            showNotification('🚀 Sẵn sàng trải nghiệm Exile of Realms trên PC!');
+            window.location.href = 'game.html';
         }
 
     } else if (platform === 'MOBILE') {
@@ -327,12 +325,8 @@ document.querySelectorAll('.nav-item').forEach(item => {
             window.location.href = 'forum.html';
             return;
         } else if (sectionName === 'Chơi Ngay') {
-            if (window.location.pathname.includes('gioithieu.html')) {
-                showNotification('🎮 Chọn nền tảng PC hoặc Mobile để bắt đầu!');
-            } else {
-                showSection('Trang Chủ');
-                showNotification('🎮 Chọn nền tảng PC hoặc Mobile để bắt đầu!');
-            }
+            window.location.href = 'game.html';
+            return;
         } else {
             showNotification(`"${sectionName}" hiện chưa có nội dung. Vui lòng quay lại sau!`);
         }
@@ -414,7 +408,13 @@ document.addEventListener('DOMContentLoaded', () => {
             introNavItem.classList.add('active');
         }
     } else {
-        if (window.location.hash === '#introduction') {
+        if (window.location.pathname.includes('game.html')) {
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+            const playNowItem = Array.from(document.querySelectorAll('.nav-item')).find(el => el.textContent.trim() === 'Chơi Ngay');
+            if (playNowItem) {
+                playNowItem.classList.add('active');
+            }
+        } else if (window.location.hash === '#introduction') {
             window.location.href = 'gioithieu.html';
         } else {
             showSection('Trang Chủ');
@@ -479,7 +479,7 @@ function showLoginModal() {
         e.preventDefault();
         showNotification('Chức năng đăng nhập đang được phát triển!');
         closeForumModal();
-        handlePlatform('PC'); 
+        window.location.href = 'game.html';
     });
 }
 
@@ -537,7 +537,7 @@ function showRegisterModal() {
         }
         showNotification('Chức năng đăng ký đang được phát triển!');
         closeForumModal();
-        handlePlatform('PC');
+        window.location.href = 'game.html';
     });
 }
 

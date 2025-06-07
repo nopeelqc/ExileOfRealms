@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chơi Ngay - Exile of Realms</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+    body {
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 50%, #16213e 100%);
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        min-height: 100vh;
+        padding-top: 80px;
+        color: #e0e0e0;
+    }
+
+    .main-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .container {
+        background: rgba(22, 33, 62, 0.5);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(217, 119, 6, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 580px;
+        min-height: 520px;
+    }
+
+    .form-container {
+        position: absolute; top: 0; height: 100%; transition: all 0.6s ease-in-out;
+    }
+
+    .form-container form {
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        padding: 0 20px;
+        height: 100%;
+        text-align: left;
+    }
+
+    h1 {
+        font-weight: 600;
+        margin-bottom: 20px;
+        font-size: 26px;
+        width: 100%;
+        color: #ffffff;
+    }
+
+    p {
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 15px 0 20px;
+        color: #CBD5E1;
+    }
+
+    label {
+        font-size: 14px;
+        font-weight: 500;
+        color: #CBD5E1;
+        width: 100%;
+        text-align: left;
+        margin-bottom: 5px;
+    }
+
+    .form-input {
+        background-color: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(180, 83, 9, 0.3);
+        padding: 12px 15px;
+        margin-bottom: 15px;
+        width: 100%;
+        border-radius: 8px;
+        color: #e0e0e0;
+    }
+    .form-input::placeholder {
+        color: #9CA3AF;
+    }
+    .form-input:focus {
+        outline: none;
+        border-color: #d97706;
+        box-shadow: 0 0 10px rgba(217, 119, 6, 0.5);
+    }
+
+    a {
+        color: #d97706;
+        font-size: 13px;
+        text-decoration: none;
+        margin: 10px 0;
+        width: 100%;
+        text-align: right;
+        font-weight: 500;
+    }
+    a:hover {
+        text-decoration: underline;
+        color: #f59e0b;
+    }
+
+    button.action-btn {
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(135deg, #d97706, #b45309);
+        color: #FFFFFF;
+        font-size: 14px;
+        font-weight: bold;
+        padding: 12px 45px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        transition: all 0.2s ease-in;
+        cursor: pointer;
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(180, 83, 9, 0.2);
+    }
+    button.action-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(180, 83, 9, 0.4);
+    }
+    button.action-btn:active {
+        transform: scale(0.98);
+    }
+    button.action-btn.ghost {
+        background: transparent;
+        border: 1px solid #FFFFFF;
+    }
+
+    .social-login-container {
+        display: flex;
+        gap: 10px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .social-login-container span {
+        color: #9CA3AF;
+    }
+    .social-login-btn {
+        border: 1px solid rgba(180, 83, 9, 0.3);
+        background: rgba(0,0,0,0.2);
+        color: #e0e0e0;
+        border-radius: 8px;
+        font-size: 14px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        flex-grow: 1;
+        padding: 10px;
+    }
+    .social-login-btn:hover {
+        background-color: rgba(180, 83, 9, 0.1);
+        border-color: #d97706;
+    }
+    .social-login-btn img {
+        width: 16px;
+        height: 16px;
+    }
+
+    .overlay-container {
+        position: absolute; top: 0; left: 50%; width: 50%; height: 100%;
+        overflow: hidden; transition: transform 0.6s ease-in-out; z-index: 100;
+    }
+
+    .overlay {
+        background: linear-gradient(to right, #78350f, #451a03);
+        color: #FFFFFF; position: relative; left: -100%;
+        height: 100%; width: 200%; transform: translateX(0);
+        transition: transform 0.6s ease-in-out;
+    }
+
+    .sign-in-container { left: 0; width: 50%; z-index: 2; }
+
+    .container.right-panel-active .sign-in-container {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    .sign-up-container { left: 0; width: 50%; opacity: 0; z-index: 1; }
+
+    .container.right-panel-active .sign-up-container {
+        transform: translateX(100%);
+        opacity: 1;
+        z-index: 5;
+        animation: show 0.6s;
+    }
+
+    @keyframes show {
+        0%, 49.99% { opacity: 0; z-index: 1; }
+        50%, 100% { opacity: 1; z-index: 5; }
+    }
+
+    .container.right-panel-active .overlay-container{ transform: translateX(-100%); }
+    .container.right-panel-active .overlay { transform: translateX(50%); }
+
+    .overlay-panel {
+        position: absolute; display: flex; align-items: center;
+        justify-content: center; flex-direction: column; padding: 0 20px;
+        text-align: center; top: 0; height: 100%; width: 50%;
+        transform: translateX(0); transition: transform 0.6s ease-in-out;
+    }
+    .overlay-left { transform: translateX(-20%); }
+    .container.right-panel-active .overlay-left { transform: translateX(0); }
+    .overlay-right { right: 0; transform: translateX(0); }
+    .container.right-panel-active .overlay-right { transform: translateX(20%); }
+    .input-wrapper { position: relative; width: 100%; }
+    .password-toggle {
+        position: absolute; right: 10px; top: 50%; transform: translateY(-75%);
+        background: none; border: none; cursor: pointer; color: #aaa; font-size: 14px;
+    }
+    .error-message { color: #ef4444; font-size: 13px; height: 18px; width: 100%; text-align: left; margin-bottom: 5px; }
+    .form-container form > span { font-size: 12px; color: #9CA3AF; margin: 15px 0; }
+    .characters-container { position: relative; width: 250px; height: 150px; margin-bottom: 15px; }
+    .character { position: absolute; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; transition: all 0.3s ease; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
+    .shake { animation: shake 0.6s ease-in-out; }
+    .mouth { position: absolute; bottom: 30%; left: 50%; transform: translateX(-50%); width: 20px; height: 10px; border: 2px solid #000; border-top: none; border-radius: 0 0 20px 20px; }
+    .character.sad .mouth { border-bottom: none; border-top: 2px solid #000; border-radius: 20px 20px 0 0; transform: translateX(-50%) rotate(180deg); }
+    @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 95% { transform: scaleY(0.1); } }
+    .blink .eye { animation: blink 3s infinite; }
+    .character.orange { width: 100px; height: 80px; background: linear-gradient(135deg, #ff7b54, #ff9a76); bottom: 15px; left: 15px; z-index: 4; }
+    .character.purple { width: 70px; height: 100px; background: linear-gradient(135deg, #8b5cf6, #a78bfa); bottom: 30px; left: 80px; z-index: 3; border-radius: 20px 20px 50% 50%; }
+    .character.black { width: 60px; height: 80px; background: linear-gradient(135deg, #374151, #4b5563); bottom: 20px; left: 120px; z-index: 2; border-radius: 20px 20px 50% 50%; }
+    .character.yellow { width: 50px; height: 90px; background: linear-gradient(135deg, #fbbf24, #f59e0b); bottom: 25px; left: 160px; z-index: 1; border-radius: 30px 30px 50% 50%; }
+    .eyes { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); display: flex; gap: 8px; }
+    .eye { width: 10px; height: 10px; background: white; border-radius: 50%; position: relative; }
+    .pupil { width: 5px; height: 5px; background: #000; border-radius: 50%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.2s ease; }
+    .character.orange .eye { width: 14px; height: 14px; }
+    .character.orange .pupil { width: 7px; height: 7px; }
+
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+            max-width: 420px;
+            min-height: 0;
+            background: transparent;
+            border: none;
+            backdrop-filter: none;
+        }
+        .form-container {
+            position: static;
+            width: 100% !important;
+            height: auto;
+            transform: none !important;
+            opacity: 1 !important;
+            z-index: 5 !important;
+            background: rgba(22, 33, 62, 0.7);
+            border-radius: 20px;
+            padding: 20px;
+            border: 1px solid rgba(255, 140, 0, 0.2);
+        }
+        .overlay-container {
+            display: none;
+        }
+        .sign-up-container {
+            display: none;
+        }
+    }
+
+    .forgot-password-modal {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        z-index: 1001;
+        opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        pointer-events: none;
+    }
+    .forgot-password-modal.show {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: all;
+    }
+    .modal-backdrop {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+    }
+    .modal-content {
+        position: absolute;
+        top: 50%; 
+        left: 50%; 
+        z-index: 1002;
+        background: rgba(22, 33, 62, 0.8);
+        border: 1px solid rgba(217, 119, 6, 0.4);
+        border-radius: 16px; padding: 30px;
+        width: 90%; max-width: 400px;
+        transform: translate(-50%, -50%) scale(0.9);
+        transition: transform 0.3s ease;
+    }
+    .forgot-password-modal.show .modal-content {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .modal-title { font-size: 22px; font-weight: 600; color: #f59e0b; }
+    .modal-close-btn { background: none; border: none; color: #9ca3af; font-size: 24px; cursor: pointer; transition: color 0.2s; }
+    .modal-close-btn:hover { color: #ffffff; }
+    .modal-body p { color: #cbd5e1; margin: 0 0 15px 0; text-align: left; }
+
+    .game-notification {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.9);
+        opacity: 0;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 16px 25px;
+        border-radius: 12px;
+        font-weight: 600;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        z-index: 2000;
+        transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        pointer-events: none;
+    }
+    .game-notification.show {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+        pointer-events: all;
+    }
+</style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="navbar-left-section">
+            <div class="logo-container">
+                <img src="logo/logovip.png" alt="Logo">
+            </div>
+            <div class="navbar-game-title">Exile of Realms</div>
+        </div>
+
+        <div class="nav-menu">
+            <div class="nav-item" onclick="window.location.href='index.html'">Trang Chủ</div>
+            <div class="nav-item" onclick="window.location.href='gioithieu.html'">Giới Thiệu</div>
+            <div class="nav-item" onclick="window.location.href='forum.html'">Diễn Đàn</div>
+            <div class="nav-item">Tin Tức</div>
+            <div class="nav-item">Nạp Tiền</div>
+            <div class="nav-item">Hướng Dẫn</div>
+            <div class="nav-item active">Chơi Ngay</div>
+
+            <div class="music-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" id="musicIcon">
+                    <path d="M9 18V5l12-2v13"/>
+                    <circle cx="6" cy="18" r="3"/>
+                    <circle cx="18" cy="16" r="3"/>
+                    <line id="musicMuteSlash" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2.5" style="display:none;"/>
+                </svg>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div class="container" id="container">
+            <div class="form-container sign-up-container">
+                <form action="#" id="signUpForm">
+                    <label for="signUpNameInput">Tên</label>
+                    <input type="text" class="form-input" id="signUpNameInput" placeholder="Nhập tên của bạn" />
+                    <label for="signUpEmailInput">Email</label>
+                    <input type="email" class="form-input" id="signUpEmailInput" placeholder="Nhập email" required/>
+                    <label for="signUpPasswordInput">Mật khẩu</label>
+                    <div class="input-wrapper">
+                        <input type="password" class="form-input" id="signUpPasswordInput" placeholder="••••••••" required/>
+                        <button type="button" class="password-toggle" id="signUpPasswordToggle">Hiện</button>
+                    </div>
+                    <label for="signUpConfirmPasswordInput">Xác nhận Mật khẩu</label>
+                    <input type="password" class="form-input" id="signUpConfirmPasswordInput" placeholder="••••••••" required/>
+
+                    <div class="error-message" id="signUpErrorMessage"></div>
+                    <button type="submit" class="action-btn">Đăng Ký</button>
+                </form>
+            </div>
+
+            <div class="form-container sign-in-container">
+                <form action="#" id="signInForm">
+                    <label for="signInEmailInput">Email</label>
+                    <input type="email" class="form-input" id="signInEmailInput" placeholder="Nhập email của bạn" required />
+                    <label for="signInPasswordInput">Mật khẩu</label>
+                    <div class="input-wrapper">
+                        <input type="password" class="form-input" id="signInPasswordInput" placeholder="••••••••" required />
+                        <button type="button" class="password-toggle" id="signInPasswordToggle">Hiện</button>
+                    </div>
+                    <a href="#" id="forgotPasswordLink">Quên mật khẩu?</a>
+                    <div class="error-message" id="signInErrorMessage"></div>
+                    <button type="submit" class="action-btn">Đăng Nhập</button>
+                    <span>hoặc đăng nhập bằng</span>
+                    <div class="social-login-container">
+                        <button type="button" class="social-login-btn"><img src="https://img.icons8.com/color/16/000000/google-logo.png"/> Google</button>
+                        <button type="button" class="social-login-btn"><img src="https://img.icons8.com/ios-filled/16/000000/mac-os.png"/> Apple</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="overlay-container">
+                <div class="overlay">
+                    <div class="overlay-panel overlay-left">
+                        <h1>Chào mừng Người Chơi!</h1>
+                        <p>Hãy gia nhập với chúng tôi ngay hôm nay, viết lên hành trình của riêng bạn</p>
+                        <div class="characters-container">
+                           <div class="character orange"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character purple"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character black"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character yellow"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                        </div>
+                        <button class="action-btn ghost" id="signIn">Đăng Nhập</button>
+                    </div>
+                    <div class="overlay-panel overlay-right">
+                        <h1>Xin chào EORER!</h1>
+                        <p>Nhập thông tin cá nhân của bạn và tiếp tục cuộc hành trình với chúng tôi</p>
+                         <div class="characters-container">
+                           <div class="character orange"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character purple"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character black"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                           <div class="character yellow"><div class="eyes"><div class="eye"><div class="pupil"></div></div><div class="eye"><div class="pupil"></div></div></div><div class="mouth"></div></div>
+                        </div>
+                        <button class="action-btn ghost" id="signUp">Đăng Ký</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="backgroundMusic" loop>
+        <source src="sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        let musicPlaying = false;
+        const backgroundMusic = document.getElementById('backgroundMusic');
+        function toggleMusic() {
+            const musicIcon = document.getElementById('musicIcon');
+            const musicMuteSlash = document.getElementById('musicMuteSlash');
+            if (musicPlaying) {
+                backgroundMusic.pause();
+                if(musicMuteSlash) musicMuteSlash.style.display = 'block';
+                musicPlaying = false;
+            } else {
+                backgroundMusic.play().catch(e => console.log("Audio play failed"));
+                if(musicMuteSlash) musicMuteSlash.style.display = 'none';
+                musicPlaying = true;
+            }
+        }
+
+        const musicButton = document.querySelector('.music-btn');
+        if (musicButton) {
+            musicButton.addEventListener('click', toggleMusic);
+        }
+
+        document.body.addEventListener('click', () => {
+            if (!musicPlaying && backgroundMusic.paused) {
+                 backgroundMusic.play().catch(e => {});
+                 const musicMuteSlash = document.getElementById('musicMuteSlash');
+                 if(musicMuteSlash) musicMuteSlash.style.display = 'none';
+                 musicPlaying = true;
+            }
+        }, { once: true });
+
+        class InteractiveLogin {
+            constructor() {
+                this.container = document.getElementById('container');
+                this.signUpButton = document.getElementById('signUp');
+                this.signInButton = document.getElementById('signIn');
+                this.overlayLeft = document.querySelector('.overlay-left');
+                this.overlayRight = document.querySelector('.overlay-right');
+
+                this.signInForm = document.getElementById('signInForm');
+                this.signInEmailInput = document.getElementById('signInEmailInput');
+                this.signInPasswordInput = document.getElementById('signInPasswordInput');
+                this.signInPasswordToggle = document.getElementById('signInPasswordToggle');
+                this.signInErrorMessage = document.getElementById('signInErrorMessage');
+
+                this.signUpForm = document.getElementById('signUpForm');
+                this.signUpNameInput = document.getElementById('signUpNameInput');
+                this.signUpEmailInput = document.getElementById('signUpEmailInput');
+                this.signUpPasswordInput = document.getElementById('signUpPasswordInput');
+                this.signUpPasswordToggle = document.getElementById('signUpPasswordToggle');
+                this.signUpConfirmPasswordInput = document.getElementById('signUpConfirmPasswordInput');
+                this.signUpErrorMessage = document.getElementById('signUpErrorMessage');
+
+                this.isTypingEmail = false;
+                this.isTypingPassword = false;
+                this.isPasswordVisible = { signIn: false, signUp: false };
+
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.startBlinking();
+            }
+
+            resetForms() {
+                this.signInForm.reset();
+                this.signUpForm.reset();
+                this.signInErrorMessage.textContent = '';
+                this.signUpErrorMessage.textContent = '';
+                this.isPasswordVisible.signIn = false;
+                this.signInPasswordInput.type = 'password';
+                this.signInPasswordToggle.textContent = 'Hiện';
+                this.isPasswordVisible.signUp = false;
+                this.signUpPasswordInput.type = 'password';
+                this.signUpPasswordToggle.textContent = 'Hiện';
+                const allCharacters = document.querySelectorAll('.character');
+                allCharacters.forEach(char => char.classList.remove('shake', 'sad'));
+            }
+
+            getActiveElements(selector) {
+                if (!this.container) return [];
+                const isSignUpActive = this.container.classList.contains('right-panel-active');
+                const activePanel = isSignUpActive ? this.overlayLeft : this.overlayRight;
+                if (!activePanel) return [];
+                return activePanel.querySelectorAll(selector);
+            }
+
+            setupEventListeners() {
+                if(this.signUpButton) this.signUpButton.addEventListener('click', () => {
+                    this.container.classList.add('right-panel-active');
+                    this.resetForms();
+                });
+                if(this.signInButton) this.signInButton.addEventListener('click', () => {
+                    this.container.classList.remove('right-panel-active');
+                    this.resetForms();
+                });
+
+                document.addEventListener('mousemove', (e) => this.handleMouseMove(e));
+
+                this.setupInputListeners(this.signInEmailInput, 'email');
+                this.setupInputListeners(this.signInPasswordInput, 'password', 'signIn');
+                this.setupInputListeners(this.signUpEmailInput, 'email');
+                this.setupInputListeners(this.signUpPasswordInput, 'password', 'signUp');
+                this.setupInputListeners(this.signUpConfirmPasswordInput, 'password');
+
+                if(this.signInPasswordToggle) this.signInPasswordToggle.addEventListener('click', () => this.togglePasswordVisibility('signIn'));
+                if(this.signUpPasswordToggle) this.signUpPasswordToggle.addEventListener('click', () => this.togglePasswordVisibility('signUp'));
+
+                if(this.signUpPasswordInput) this.signUpPasswordInput.addEventListener('input', () => this.validatePasswordMatch());
+                if(this.signUpConfirmPasswordInput) this.signUpConfirmPasswordInput.addEventListener('input', () => this.validatePasswordMatch());
+
+                if(this.signInForm) this.signInForm.addEventListener('submit', (e) => this.handleSignIn(e));
+                if(this.signUpForm) this.signUpForm.addEventListener('submit', (e) => this.handleSignUp(e));
+            }
+
+            validatePasswordMatch() {
+                const pass = this.signUpPasswordInput.value;
+                const confirmPass = this.signUpConfirmPasswordInput.value;
+                if (confirmPass.length > 0 && pass !== confirmPass) {
+                    this.signUpErrorMessage.textContent = 'Mật khẩu không khớp.';
+                } else {
+                    this.signUpErrorMessage.textContent = '';
+                }
+            }
+
+            setupInputListeners(inputElement, type, formType = null) {
+                inputElement.addEventListener('focus', (e) => {
+                    type === 'email' ? this.isTypingEmail = true : this.isTypingPassword = true;
+                    if (type === 'password' && this.isPasswordVisible[formType]) {
+                        this.lookAway(formType);
+                    } else {
+                        this.lookAtInput(e.target);
+                    }
+                });
+
+                inputElement.addEventListener('blur', () => {
+                    type === 'email' ? this.isTypingEmail = false : this.isTypingPassword = false;
+                });
+
+                inputElement.addEventListener('input', (e) => {
+                     if (type !== 'password' || !this.isPasswordVisible[formType]) {
+                        this.lookAtInput(e.target);
+                    }
+                });
+            }
+
+            handleMouseMove(e) {
+                if (this.isTypingEmail || this.isTypingPassword) return;
+                const activePupils = this.getActiveElements('.pupil');
+                activePupils.forEach(pupil => this.movePupil(pupil, e.clientX, e.clientY));
+            }
+
+            movePupil(pupil, targetX, targetY) {
+                const eye = pupil.parentElement;
+                const eyeRect = eye.getBoundingClientRect();
+                if (eyeRect.width === 0) return;
+
+                const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+                const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+                const angle = Math.atan2(targetY - eyeCenterY, targetX - eyeCenterX);
+                const distance = Math.min(2.5, Math.sqrt(Math.pow(targetX - eyeCenterX, 2) + Math.pow(targetY - eyeCenterY, 2)) / 40);
+
+                const pupilX = Math.cos(angle) * distance;
+                const pupilY = Math.sin(angle) * distance;
+                pupil.style.transform = `translate(calc(-50% + ${pupilX}px), calc(-50% + ${pupilY}px))`;
+            }
+
+            lookAtInput(targetInput) {
+                const inputRect = targetInput.getBoundingClientRect();
+                const inputCenterX = inputRect.left + inputRect.width / 2;
+                const inputCenterY = inputRect.top + inputRect.height / 2;
+                const activePupils = this.getActiveElements('.pupil');
+                activePupils.forEach(pupil => this.movePupil(pupil, inputCenterX, inputCenterY));
+            }
+
+            lookAway(formType) {
+                const xOffset = (formType === 'signUp') ? -3 : 3;
+                const activePupils = this.getActiveElements('.pupil');
+                activePupils.forEach(pupil => {
+                    pupil.style.transform = `translate(calc(-50% + ${xOffset}px), calc(-50% - 2px))`;
+                });
+            }
+
+            togglePasswordVisibility(formType) {
+                this.isPasswordVisible[formType] = !this.isPasswordVisible[formType];
+                const input = (formType === 'signIn') ? this.signInPasswordInput : this.signUpPasswordInput;
+                const toggle = (formType === 'signIn') ? this.signInPasswordToggle : this.signUpPasswordToggle;
+
+                if (this.isPasswordVisible[formType]) {
+                    input.type = 'text';
+                    toggle.textContent = 'Ẩn';
+                    this.lookAway(formType);
+                } else {
+                    input.type = 'password';
+                    toggle.textContent = 'Hiện';
+                    this.lookAtInput(input);
+                }
+            }
+
+            handleSignIn(e) {
+                e.preventDefault();
+                this.showError(this.signInErrorMessage, 'Email hoặc mật khẩu không đúng.');
+            }
+
+            handleSignUp(e) {
+                e.preventDefault();
+                const pass = this.signUpPasswordInput.value;
+                const confirmPass = this.signUpConfirmPasswordInput.value;
+
+                if (pass !== confirmPass) {
+                    this.showError(this.signUpErrorMessage, 'Mật khẩu không khớp.');
+                    return;
+                }
+                if (pass.length < 6) {
+                    this.showError(this.signUpErrorMessage, 'Mật khẩu phải có ít nhất 6 ký tự.');
+                    return;
+                }
+                this.showSuccess('Đăng ký thành công!');
+            }
+
+            showError(errorElement, message) {
+                errorElement.textContent = message;
+                const activeCharacters = this.getActiveElements('.character');
+                activeCharacters.forEach(char => char.classList.add('shake', 'sad'));
+                setTimeout(() => {
+                    if (errorElement.textContent === message) {
+                       errorElement.textContent = '';
+                    }
+                    activeCharacters.forEach(char => char.classList.remove('shake', 'sad'));
+                }, 2500);
+            }
+
+            showSuccess(message) {
+                alert(message);
+            }
+
+            startBlinking() {
+                 setInterval(() => {
+                    if (this.isTypingEmail || this.isTypingPassword) return;
+                    const activeCharacters = this.getActiveElements('.character');
+
+                    if (activeCharacters.length > 0) {
+                        const randomChar = activeCharacters[Math.floor(Math.random() * activeCharacters.length)];
+                        randomChar.classList.add('blink');
+                        setTimeout(() => randomChar.classList.remove('blink'), 300);
+                    }
+                }, 3000 + Math.random() * 2000);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new InteractiveLogin();
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showForgotPasswordModal();
+                });
+            }
+        });
+
+        function showForgotPasswordModal() {
+            if (document.querySelector('.forgot-password-modal')) return;
+            const modalHTML = `
+                <div class="modal-backdrop"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Khôi Phục Mật Khẩu</h2>
+                        <button class="modal-close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Vui lòng nhập email của bạn. Chúng tôi sẽ gửi một liên kết để bạn đặt lại mật khẩu.</p>
+                        <form id="forgotPasswordForm">
+                            <label for="forgotEmailInput" style="margin-top: 10px;">Email</label>
+                            <input type="email" class="form-input" id="forgotEmailInput" placeholder="email@example.com" required>
+                            <button type="submit" class="action-btn" style="margin-top:10px;">Gửi Liên Kết</button>
+                        </form>
+                    </div>
+                </div>
+            `;
+            const modalElement = document.createElement('div');
+            modalElement.className = 'forgot-password-modal';
+            modalElement.innerHTML = modalHTML;
+            document.body.appendChild(modalElement);
+            modalElement.querySelector('.modal-backdrop').addEventListener('click', closeForgotPasswordModal);
+            modalElement.querySelector('.modal-close-btn').addEventListener('click', closeForgotPasswordModal);
+            modalElement.querySelector('#forgotPasswordForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = modalElement.querySelector('#forgotEmailInput').value;
+                if(email) {
+                    showGameNotification('Nếu email tồn tại, một link khôi phục đã được gửi đi.');
+                    closeForgotPasswordModal();
+                }
+            });
+            setTimeout(() => modalElement.classList.add('show'), 10);
+        }
+        function closeForgotPasswordModal() {
+            const modalElement = document.querySelector('.forgot-password-modal');
+            if (modalElement) {
+                modalElement.classList.remove('show');
+                setTimeout(() => modalElement.remove(), 300);
+            }
+        }
+        function showGameNotification(message) {
+            const existingNotification = document.querySelector('.game-notification');
+            if(existingNotification) existingNotification.remove();
+
+            const notification = document.createElement('div');
+            notification.className = 'game-notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 10);
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    notification.remove();
+                }, 400);
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

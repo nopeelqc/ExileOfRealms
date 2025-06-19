@@ -26,6 +26,53 @@ function simulateNetworkSpeed() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const settingsBtn = document.getElementById('settingsBtn');
+    const playBtn = document.getElementById('playBtn');
+    const quitBtn = document.getElementById('quitBtn');
+    const settingsPanel = document.getElementById('settings-panel');
+    const closeSettingsBtn = document.getElementById('closeSettingsBtn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumeFill = document.getElementById('volume-fill');
+    const volumeValue = document.getElementById('volume-value');
+    const logoutOverlay = document.getElementById('logout-overlay');
+    const confirmLogoutPanel = document.getElementById('confirm-logout-panel');
+    const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
+    const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+    function startLogoutSequence() {
+        if (!logoutOverlay) return;
+        logoutOverlay.classList.add('visible');
+        setTimeout(() => {
+            window.location.href = 'game.html'; 
+        }, 2500);
+    }
+
+    function updateVolumeDisplay() {
+        const value = volumeSlider.value;
+        volumeValue.textContent = `${value}%`;
+        volumeFill.style.width = `${value}%`;
+    }
+    settingsBtn.addEventListener('click', () => settingsPanel.classList.add('visible'));
+    closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('visible'));
+    volumeSlider.addEventListener('input', updateVolumeDisplay);
+    updateVolumeDisplay();
+    playBtn.addEventListener('click', () => {
+        const mainMenu = document.getElementById('mainMenu');
+        if (mainMenu) mainMenu.style.display = 'none';
+        console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
+    });
+    quitBtn.addEventListener('click', () => {
+        confirmLogoutPanel.classList.add('visible');
+    });
+    cancelLogoutBtn.addEventListener('click', () => {
+        confirmLogoutPanel.classList.remove('visible');
+    });
+    confirmLogoutBtn.addEventListener('click', () => {
+        confirmLogoutPanel.classList.remove('visible');
+        setTimeout(startLogoutSequence, 200);
+    });
+});
+
 window.addEventListener('load', function() {
     const loadingScreen = document.getElementById('loadingScreen');
     const mainMenu = document.getElementById('mainMenu');
@@ -39,16 +86,4 @@ window.addEventListener('load', function() {
     }, 6500);
 
     simulateNetworkSpeed(); 
-});
-
-document.getElementById('playBtn').addEventListener('click', () => {
-    alert('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
-});
-
-document.getElementById('settingsBtn').addEventListener('click', () => {
-    alert('Mở bảng cài đặt đồ họa và âm thanh!');
-});
-
-document.getElementById('quitBtn').addEventListener('click', () => {
-    alert('Hẹn gặp lại bạn lần sau!');
 });

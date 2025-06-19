@@ -36,7 +36,47 @@
             <button class="menu-btn" id="quitBtn">Thoát</button>
         </div>
     </div>
-    
+
+    <div id="logout-overlay" class="logout-overlay">
+        <div class="logout-box">
+            <p class="logout-text">Đang tháo dỡ lục địa</p>
+            <div class="pixel-spinner"></div>
+        </div>
+    </div>
+
+    <div id="settings-panel" class="settings-panel">
+        <div class="settings-box">
+            <h2 class="settings-title">Cài Đặt</h2>
+
+            <div class="setting-item">
+                <label for="volume-slider" class="setting-label">Âm Lượng</label>
+                <div class="volume-control">
+                    <i class="fas fa-volume-off"></i>
+                    <div class="slider-container">
+                        <input type="range" min="0" max="100" value="75" class="pixel-slider" id="volume-slider">
+                        <div class="slider-track"></div>
+                        <div class="slider-fill" id="volume-fill"></div>
+                    </div>
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <span id="volume-value" class="volume-value">75%</span>
+            </div>
+
+            <button class="menu-btn" id="closeSettingsBtn">Quay Lại</button>
+        </div>
+    </div>
+
+    <div id="confirm-logout-panel" class="confirm-panel">
+        <div class="confirm-box">
+            <p class="confirm-text">Bạn có chắc chắn muốn thoát?</p>
+            <div class="confirm-buttons">
+                <button class="menu-btn" id="cancelLogoutBtn">Không</button>
+                <button class="menu-btn btn-danger" id="confirmLogoutBtn">Có</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="logout-overlay" class="logout-overlay"></div>
     <script src="logicgame.js"></script>
 </body>
 </html>

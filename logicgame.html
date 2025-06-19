@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Dashboard - Exile of Realms</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="logicgame.css">
+</head>
+<body>
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-info-container">
+            <div class="loading-text">Đang tiến hành phá vỡ phong ấn lục địa Exile of Realms ...</div>
+            <div class="network-status">
+                <i class="fas fa-arrow-down"></i> Tốc độ: <span id="speed-value">--</span> <span id="speed-unit">MB/s</span>
+            </div>
+        </div>
+        
+        <div class="loading-bar">
+            <div class="loading-trail">
+                <img src="asset/load.png" alt="loading..." class="loading-sword-icon">
+            </div>
+        </div>
+    </div>
+
+    <div class="main-menu" id="mainMenu">
+        <h1 class="menu-title">Exile of Realms</h1>
+        <div class="menu-options">
+            <button class="menu-btn" id="playBtn">Chơi Ngay</button>
+            <button class="menu-btn" id="settingsBtn">Cài Đặt</button>
+            <button class="menu-btn" id="quitBtn">Thoát</button>
+        </div>
+    </div>
+    
+    <script src="logicgame.js"></script>
+</body>
+</html>

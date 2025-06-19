@@ -238,7 +238,7 @@ function showSocialQR(platform) {
             const rect = socialIcon.getBoundingClientRect();
             qr.style.top = rect.top + (rect.height / 2) - (qr.offsetHeight / 2) + 'px';
         }
-    }, 10);
+    }, 200);
 }
 
 function hideAllQR() {

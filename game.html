@@ -330,6 +330,15 @@
         opacity: 1;
         pointer-events: all;
     }
+
+    @keyframes fadeOutEffect {
+        from { opacity: 1; transform: scale(1); }
+        to { opacity: 0; transform: scale(0.98); }
+    }
+
+    body.page-fade-out {
+        animation: fadeOutEffect 0.5s forwards;
+    }
 </style>
 </head>
 <body>
@@ -433,7 +442,7 @@
     </div>
 
     <audio id="backgroundMusic" loop>
-        <source src="sound.mp3" type="audio/mpeg">
+        <source src="tsound.mp3" type="audio/mpeg">
     </audio>
 
     <script>
@@ -636,16 +645,57 @@
                 }
             }
 
+            // Trong file game.html, thay thế hàm handleSignIn cũ bằng hàm này
+
             handleSignIn(e) {
                 e.preventDefault();
-                this.showError(this.signInErrorMessage, 'Email hoặc mật khẩu không đúng.');
+                const email = this.signInEmailInput.value;
+                const password = this.signInPasswordInput.value;
+
+                if (!email || !password) {
+                    this.showError(this.signInErrorMessage, 'Vui lòng nhập email và mật khẩu.');
+                    return;
+                }
+
+                try {
+                    const accounts = JSON.parse(localStorage.getItem('userAccounts')) || [];
+                    const foundAccount = accounts.find(account => account.email === email && account.password === password);
+
+                    if (foundAccount) {
+                        // --- BẮT ĐẦU PHẦN CẬP NHẬT ---
+
+                        // 1. Lưu thông tin người dùng vào sessionStorage để trang sau có thể truy cập
+                        sessionStorage.setItem('loggedInUser', JSON.stringify(foundAccount));
+
+                        // 2. Thêm class để kích hoạt hiệu ứng fade-out
+                        document.body.classList.add('page-fade-out');
+
+                        // 3. Chờ hiệu ứng chạy xong (500ms) rồi mới chuyển trang
+                        setTimeout(() => {
+                            window.location.href = 'logicgame.html';
+                        }, 500);
+                        
+                        // --- KẾT THÚC PHẦN CẬP NHẬT ---
+                    } else {
+                        this.showError(this.signInErrorMessage, 'Email hoặc mật khẩu không đúng.');
+                    }
+                } catch (error) {
+                    console.error('Lỗi khi đăng nhập:', error);
+                    this.showError(this.signInErrorMessage, 'Có lỗi xảy ra, không thể đăng nhập.');
+                }
             }
 
             handleSignUp(e) {
                 e.preventDefault();
+                const name = this.signUpNameInput.value;
+                const email = this.signUpEmailInput.value;
                 const pass = this.signUpPasswordInput.value;
                 const confirmPass = this.signUpConfirmPasswordInput.value;
 
+                if (!name || !email || !pass || !confirmPass) {
+                    this.showError(this.signUpErrorMessage, 'Vui lòng điền đầy đủ thông tin.');
+                    return;
+                }
                 if (pass !== confirmPass) {
                     this.showError(this.signUpErrorMessage, 'Mật khẩu không khớp.');
                     return;
@@ -654,7 +704,26 @@
                     this.showError(this.signUpErrorMessage, 'Mật khẩu phải có ít nhất 6 ký tự.');
                     return;
                 }
-                this.showSuccess('Đăng ký thành công!');
+
+                try {
+                    const accounts = JSON.parse(localStorage.getItem('userAccounts')) || [];
+                    const existingAccount = accounts.find(account => account.email === email);
+                    if (existingAccount) {
+                        this.showError(this.signUpErrorMessage, 'Email này đã được sử dụng.');
+                        return;
+                    }
+                    accounts.push({ name, email, password: pass });
+                    localStorage.setItem('userAccounts', JSON.stringify(accounts));
+                    this.showSuccess('Đăng ký thành công!');
+                    setTimeout(() => {
+                        this.container.classList.remove('right-panel-active');
+                        this.resetForms();
+                    }, 1500);
+
+                } catch (error) {
+                    console.error('Lỗi khi lưu vào localStorage:', error);
+                    this.showError(this.signUpErrorMessage, 'Có lỗi xảy ra, không thể đăng ký.');
+                }
             }
 
             showError(errorElement, message) {

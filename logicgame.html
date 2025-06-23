@@ -5,14 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Dashboard - Exile of Realms</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
-
     <link rel="stylesheet" href="logicgame.css">
 </head>
 <body>
+
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-info-container">
             <div class="loading-text">Đang tiến hành phá vỡ phong ấn lục địa Exile of Realms ...</div>
@@ -20,7 +19,6 @@
                 <i class="fas fa-arrow-down"></i> Tốc độ: <span id="speed-value">--</span> <span id="speed-unit">MB/s</span>
             </div>
         </div>
-        
         <div class="loading-bar">
             <div class="loading-trail">
                 <img src="asset/effect/load.png" alt="loading..." class="loading-sword-icon">
@@ -32,7 +30,7 @@
         <h1 class="menu-title">Exile of Realms</h1>
         <div class="menu-options">
             <button class="menu-btn" id="playBtn">Chơi Ngay</button>
-            <button class="menu-btn" id="settingsBtn">Cài Đặt</button>
+            <button class="menu-btn" id="notificationBtn">Thông Báo</button>
             <button class="menu-btn" id="quitBtn">Thoát</button>
         </div>
     </div>
@@ -41,7 +39,6 @@
         <div class="loading-info-container">
             <div class="loading-text">Phá vỡ thành công, chuẩn bị nghênh đón kỷ nguyên mới</div>
         </div>
-        
         <div class="loading-bar">
             <div class="loading-trail" id="gameLoadingTrail">
                 <img src="asset/effect/load.png" alt="loading..." class="loading-sword-icon">
@@ -59,21 +56,17 @@
     <div id="settings-panel" class="settings-panel">
         <div class="settings-box">
             <h2 class="settings-title">Cài Đặt</h2>
-
             <div class="setting-item">
-                <label for="volume-slider" class="setting-label">Âm Lượng</label>
-                <div class="volume-control">
-                    <i class="fas fa-volume-off"></i>
-                    <div class="slider-container">
-                        <input type="range" min="0" max="100" value="75" class="pixel-slider" id="volume-slider">
-                        <div class="slider-track"></div>
-                        <div class="slider-fill" id="volume-fill"></div>
-                    </div>
-                    <i class="fas fa-volume-up"></i>
+                <label class="setting-label">Âm Thanh</label>
+                <div class="sound-toggle-row">
+                    <span>SFX</span>
+                    <button class="toggle-btn" id="sfx-toggle"><span class="toggle-slider"></span></button>
                 </div>
-                <span id="volume-value" class="volume-value">75%</span>
+                <div class="sound-toggle-row">
+                    <span>Nhạc Nền</span>
+                    <button class="toggle-btn" id="music-toggle"><span class="toggle-slider"></span></button>
+                </div>
             </div>
-
             <button class="menu-btn" id="closeSettingsBtn">Quay Lại</button>
         </div>
     </div>
@@ -93,73 +86,59 @@
             <div id="clickable-avatar-area" class="pixel-avatar-frame">
                 <div class="pixel-avatar-placeholder"></div>
             </div>
-    
             <div class="pixel-info-box">
-                </div>
+            </div>
         </div>
     </div>
 
     <div id="character-info-panel" class="panel-overlay">
         <div class="panel-box">
             <h2 class="panel-title">Thông Tin Nhân Vật</h2>
-            
             <button id="close-character-info-btn" class="panel-close-btn">&times;</button>
-
             <div class="panel-content">
                 <div class="left-column">
-                    <div class="character-display">
-                        </div>
-                    <div class="action-buttons">
-                        <button class="menu-btn small-btn">Dịch Dung</button>
-                        <button class="menu-btn small-btn">Y Phục</button>
-                    </div>
+                    <div class="character-display"></div>
                 </div>
-
                 <div class="right-column">
-                    <div class="stat-item">
-                        <span class="stat-label">Tên:</span>
-                        <span class="stat-value">Nopee</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Cảnh Giới:</span>
-                        <span class="stat-value">Luyện Khí Tầng 1</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Vũ Khí Bản Mệnh:</span>
-                        <span class="stat-value">Huyền Linh Kiếm</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Pháp Bảo:</span>
-                        <span class="stat-value">Không Có</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Khí Huyết:</span>
-                        <span class="stat-value">100</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Linh Khí:</span>
-                        <span class="stat-value">1/100</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Tốc Độ Hấp Thu Linh Khí :</span>
-                        <span class="stat-value">10 / s</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Công Kích:</span>
-                        <span class="stat-value">5</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Phòng Thủ:</span>
-                        <span class="stat-value">5</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">Tỷ Lệ Bạo Kích :</span>
-                        <span class="stat-value">1.0</span>
-                    </div>
+                    <div class="stat-item"><span class="stat-label">Tên:</span><span class="stat-value">Nopee</span></div>
+                    <div class="stat-item"><span class="stat-label">Cảnh Giới:</span><span class="stat-value">Luyện Khí Tầng 1</span></div>
+                    <div class="stat-item"><span class="stat-label">Vũ Khí Bản Mệnh:</span><span class="stat-value">Huyền Linh Kiếm</span></div>
+                    <div class="stat-item"><span class="stat-label">Pháp Bảo:</span><span class="stat-value">Không Có</span></div>
+                    <div class="stat-item"><span class="stat-label">Sinh Mệnh:</span><span class="stat-value">1000</span></div>
+                    <div class="stat-item"><span class="stat-label">Linh Khí:</span><span class="stat-value">1/1000</span></div>
+                    <div class="stat-item"><span class="stat-label">Tốc Độ Hấp Thu Linh Khí :</span><span class="stat-value">10 / s</span></div>
+                    <div class="stat-item"><span class="stat-label">Công Kích:</span><span class="stat-value">50</span></div>
+                    <div class="stat-item"><span class="stat-label">Phòng Thủ:</span><span class="stat-value">25</span></div>
+                    <div class="stat-item"><span class="stat-label">Tỷ Lệ Bạo Kích :</span><span class="stat-value">5%</span></div>
+                    <div class="stat-item"><span class="stat-label">Sát Thương Bạo Kích :</span><span class="stat-value">100</span></div>
                 </div>
             </div>
-
+            <div class="action-buttons">
+                <button class="menu-btn small-btn">Dịch Dung</button>
+                <button class="menu-btn small-btn">Y Phục</button>
+                <button class="menu-btn small-btn">Cài Đặt</button>
+                <button class="menu-btn small-btn">Đổi Gifcode</button>
             </div>
+        </div>
+    </div>
+
+    <div id="avatar-select-panel" class="panel-overlay">
+        <div class="panel-box" style="max-width: 610px; max-height: 700px;">
+            <button id="close-avatar-select-btn" class="panel-close-btn">&times;</button>
+            <div class="panel-content hide-scrollbar" style="overflow-y: auto; overflow-x: hidden;">
+                <div id="avatar-grid"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-popup" class="panel-overlay">
+        <div class="panel-box" style="max-width: 400px; max-height: 300px; text-align:center;">
+            <h2 class="panel-title">Thông Báo</h2>
+            <button id="close-notification-btn" class="panel-close-btn">&times;</button>
+            <div class="panel-content" style="justify-content:center;align-items:center;">
+                <p>Chức năng cài đặt chỉ khả dụng khi bạn đã vào game!</p>
+            </div>
+        </div>
     </div>
 
     <script src="logicgame.js"></script>

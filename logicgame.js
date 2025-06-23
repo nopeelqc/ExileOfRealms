@@ -55,6 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const sfxToggle = document.getElementById('sfx-toggle');
     const musicToggle = document.getElementById('music-toggle');
 
+    const gifcodePanel = document.getElementById('gifcode-panel');
+    const closeGifcodeBtn = document.getElementById('close-gifcode-btn');
+    const submitGifcodeBtn = document.getElementById('submit-gifcode-btn');
+    const gifcodeInput = document.getElementById('gifcode-input');
+    const gifcodeMessage = document.getElementById('gifcode-message');
+
     let currentAvatar = localStorage.getItem('selectedAvatar') || 'asset/avt/avt (1).jpg';
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
@@ -117,8 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function attachDichDungEvent() {
         if (!characterInfoPanel) return;
-        const [dichDungBtn, , settingBtn] = characterInfoPanel.querySelectorAll('.action-buttons .menu-btn');
-
+        const [dichDungBtn, , settingBtn, gifcodeBtn] = characterInfoPanel.querySelectorAll('.action-buttons .menu-btn');
         if (dichDungBtn && !dichDungBtn._avatarEventAttached) {
             dichDungBtn.addEventListener('click', openAvatarPanel);
             dichDungBtn._avatarEventAttached = true;
@@ -128,6 +133,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (settingsPanel) settingsPanel.classList.add('visible');
             });
             settingBtn._settingEventAttached = true;
+        }
+        if (gifcodeBtn && !gifcodeBtn._gifcodeEventAttached) {
+            gifcodeBtn.addEventListener('click', () => {
+                if (gifcodePanel) gifcodePanel.classList.add('visible');
+            });
+            gifcodeBtn._gifcodeEventAttached = true;
         }
     }
     
@@ -199,6 +210,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (closeAvatarBtn && avatarPanel) {
         closeAvatarBtn.addEventListener('click', () => avatarPanel.classList.remove('visible'));
+    }
+
+    if (closeGifcodeBtn && gifcodePanel) {
+        closeGifcodeBtn.addEventListener('click', () => {
+            gifcodePanel.classList.remove('visible');
+            if (gifcodeInput) gifcodeInput.value = '';
+            if (gifcodeMessage) gifcodeMessage.textContent = '';
+        });
+    }
+
+    if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
+        submitGifcodeBtn.addEventListener('click', () => {
+            const code = gifcodeInput.value.trim();
+            if (!code) {
+                gifcodeMessage.textContent = 'Vui lòng nhập mã Gifcode!';
+                return;
+            }
+            // Demo: kiểm tra mã hợp lệ (bạn có thể thay bằng API thực tế)
+            if (code === 'EOR2024') {
+                gifcodeMessage.textContent = 'Đổi Gifcode thành công!';
+            } else {
+                gifcodeMessage.textContent = 'Mã Gifcode không hợp lệ!';
+            }
+        });
     }
 
     if (sfxToggle) {

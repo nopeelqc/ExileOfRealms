@@ -39,14 +39,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const confirmLogoutPanel = document.getElementById('confirm-logout-panel');
     const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
     const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
+    const gameLoadingScreen = document.getElementById('gameLoadingScreen');
+    const characterInfoPanel = document.getElementById('character-info-panel');
+    const closeCharacterInfoBtn = document.getElementById('close-character-info-btn');
     function startLogoutSequence() {
         if (!logoutOverlay) return;
         logoutOverlay.classList.add('visible');
         setTimeout(() => {
-            window.location.href = 'game.html'; 
+            window.location.reload(); 
         }, 2500);
     }
-
     function updateVolumeDisplay() {
         const value = volumeSlider.value;
         volumeValue.textContent = `${value}%`;
@@ -58,7 +60,31 @@ document.addEventListener('DOMContentLoaded', () => {
     updateVolumeDisplay();
     playBtn.addEventListener('click', () => {
         const mainMenu = document.getElementById('mainMenu');
-        if (mainMenu) mainMenu.style.display = 'none';
+        
+        if (mainMenu) {
+            mainMenu.style.display = 'none';
+        }
+
+        if (gameLoadingScreen) {
+            gameLoadingScreen.classList.add('visible');
+            setTimeout(() => {
+                gameLoadingScreen.style.display = 'none';
+                document.body.style.backgroundImage = "url('background/uigame.png')";
+                const gameUI = document.getElementById('game-ui');
+                if (gameUI) {
+                    gameUI.style.display = 'block';
+                }
+                const clickableAvatar = document.getElementById('clickable-avatar-area');
+                if (clickableAvatar && characterInfoPanel) {
+                    clickableAvatar.addEventListener('click', () => {
+                        console.log('Mở bảng thông tin nhân vật!');
+                        characterInfoPanel.classList.add('visible');
+                    });
+                }
+
+            }, 4000);
+        }
+
         console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
     });
     quitBtn.addEventListener('click', () => {
@@ -67,10 +93,16 @@ document.addEventListener('DOMContentLoaded', () => {
     cancelLogoutBtn.addEventListener('click', () => {
         confirmLogoutPanel.classList.remove('visible');
     });
+
     confirmLogoutBtn.addEventListener('click', () => {
         confirmLogoutPanel.classList.remove('visible');
         setTimeout(startLogoutSequence, 200);
     });
+    if (closeCharacterInfoBtn && characterInfoPanel) {
+        closeCharacterInfoBtn.addEventListener('click', () => {
+            characterInfoPanel.classList.remove('visible');
+        });
+    }
 });
 
 window.addEventListener('load', function() {

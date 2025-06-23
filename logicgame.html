@@ -23,7 +23,7 @@
         
         <div class="loading-bar">
             <div class="loading-trail">
-                <img src="asset/load.png" alt="loading..." class="loading-sword-icon">
+                <img src="asset/effect/load.png" alt="loading..." class="loading-sword-icon">
             </div>
         </div>
     </div>
@@ -34,6 +34,18 @@
             <button class="menu-btn" id="playBtn">Chơi Ngay</button>
             <button class="menu-btn" id="settingsBtn">Cài Đặt</button>
             <button class="menu-btn" id="quitBtn">Thoát</button>
+        </div>
+    </div>
+
+    <div class="loading-screen" id="gameLoadingScreen">
+        <div class="loading-info-container">
+            <div class="loading-text">Phá vỡ thành công, chuẩn bị nghênh đón kỷ nguyên mới</div>
+        </div>
+        
+        <div class="loading-bar">
+            <div class="loading-trail" id="gameLoadingTrail">
+                <img src="asset/effect/load.png" alt="loading..." class="loading-sword-icon">
+            </div>
         </div>
     </div>
 
@@ -76,7 +88,80 @@
         </div>
     </div>
 
-    <div id="logout-overlay" class="logout-overlay"></div>
+    <div id="game-ui" class="game-ui-container">
+        <div class="player-info-wrapper">
+            <div id="clickable-avatar-area" class="pixel-avatar-frame">
+                <div class="pixel-avatar-placeholder"></div>
+            </div>
+    
+            <div class="pixel-info-box">
+                </div>
+        </div>
+    </div>
+
+    <div id="character-info-panel" class="panel-overlay">
+        <div class="panel-box">
+            <h2 class="panel-title">Thông Tin Nhân Vật</h2>
+            
+            <button id="close-character-info-btn" class="panel-close-btn">&times;</button>
+
+            <div class="panel-content">
+                <div class="left-column">
+                    <div class="character-display">
+                        </div>
+                    <div class="action-buttons">
+                        <button class="menu-btn small-btn">Dịch Dung</button>
+                        <button class="menu-btn small-btn">Y Phục</button>
+                    </div>
+                </div>
+
+                <div class="right-column">
+                    <div class="stat-item">
+                        <span class="stat-label">Tên:</span>
+                        <span class="stat-value">Nopee</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Cảnh Giới:</span>
+                        <span class="stat-value">Luyện Khí Tầng 1</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Vũ Khí Bản Mệnh:</span>
+                        <span class="stat-value">Huyền Linh Kiếm</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Pháp Bảo:</span>
+                        <span class="stat-value">Không Có</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Khí Huyết:</span>
+                        <span class="stat-value">100</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Linh Khí:</span>
+                        <span class="stat-value">1/100</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Tốc Độ Hấp Thu Linh Khí :</span>
+                        <span class="stat-value">10 / s</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Công Kích:</span>
+                        <span class="stat-value">5</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Phòng Thủ:</span>
+                        <span class="stat-value">5</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Tỷ Lệ Bạo Kích :</span>
+                        <span class="stat-value">1.0</span>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+    </div>
+
     <script src="logicgame.js"></script>
 </body>
 </html>

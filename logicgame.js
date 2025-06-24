@@ -1,3 +1,8 @@
+//
+// NỘI DUNG TỆP logicgame.js SAU KHI CHỈNH SỬA
+// SAO CHÉP VÀ THAY THẾ TẤT CẢ
+//
+
 function simulateNetworkSpeed() {
     const speedValueEl = document.getElementById('speed-value');
     const speedUnitEl = document.getElementById('speed-unit');
@@ -28,42 +33,66 @@ function simulateNetworkSpeed() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Lấy tất cả các element cần thiết
+    const loadingScreen = document.getElementById('loadingScreen');
+    const mainMenu = document.getElementById('mainMenu');
     const playBtn = document.getElementById('playBtn');
     const quitBtn = document.getElementById('quitBtn');
     const notificationBtn = document.getElementById('notificationBtn');
-    
     const settingsPanel = document.getElementById('settings-panel');
     const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-    
     const logoutOverlay = document.getElementById('logout-overlay');
     const confirmLogoutPanel = document.getElementById('confirm-logout-panel');
     const confirmLogoutBtn = document.getElementById('confirmLogoutBtn');
     const cancelLogoutBtn = document.getElementById('cancelLogoutBtn');
-    
     const gameLoadingScreen = document.getElementById('gameLoadingScreen');
-    
     const characterInfoPanel = document.getElementById('character-info-panel');
     const closeCharacterInfoBtn = document.getElementById('close-character-info-btn');
-    
     const clickableAvatar = document.getElementById('clickable-avatar-area');
     const avatarPanel = document.getElementById('avatar-select-panel');
     const avatarGrid = document.getElementById('avatar-grid');
     const closeAvatarBtn = document.getElementById('close-avatar-select-btn');
     const notificationPopup = document.getElementById('notification-popup');
     const closeNotificationBtn = document.getElementById('close-notification-btn');
-
     const sfxToggle = document.getElementById('sfx-toggle');
     const musicToggle = document.getElementById('music-toggle');
-
     const gifcodePanel = document.getElementById('gifcode-panel');
     const closeGifcodeBtn = document.getElementById('close-gifcode-btn');
     const submitGifcodeBtn = document.getElementById('submit-gifcode-btn');
     const gifcodeInput = document.getElementById('gifcode-input');
     const gifcodeMessage = document.getElementById('gifcode-message');
+    const gameUI = document.getElementById('game-ui');
 
     let currentAvatar = localStorage.getItem('selectedAvatar') || 'asset/avt/avt (1).jpg';
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
+
+    /* --- BẮT ĐẦU PHẦN THÊM MỚI --- */
+
+    // Hàm để vào thẳng giao diện game
+    function enterDevMode() {
+        console.log("DEV MODE ACTIVATED: Bỏ qua màn hình chờ.");
+        // Ẩn tất cả các màn hình không cần thiết
+        if (loadingScreen) loadingScreen.style.display = 'none';
+        if (mainMenu) mainMenu.style.display = 'none';
+        if (gameLoadingScreen) gameLoadingScreen.style.display = 'none';
+
+        // Hiển thị giao diện game ngay lập tức
+        document.body.style.backgroundImage = "url('background/uigame.png')";
+        if (gameUI) gameUI.style.display = 'block';
+
+        // Gắn các sự kiện cần thiết cho giao diện game
+        if (clickableAvatar && characterInfoPanel) {
+            clickableAvatar.addEventListener('click', () => {
+                characterInfoPanel.classList.add('visible');
+                attachDichDungEvent();
+            });
+        }
+    }
+    // Dành cho việc gọi hàm từ console
+    window.enterDevMode = enterDevMode;
+
+    /* --- KẾT THÚC PHẦN THÊM MỚI --- */
 
     function startLogoutSequence() {
         if (!logoutOverlay) return;
@@ -113,7 +142,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 avatarGrid.appendChild(img);
             }
         } else {
-
             Array.from(avatarGrid.children).forEach(child => {
                 child.classList.remove('selected');
                 if (child.src === currentAvatar) child.classList.add('selected');
@@ -149,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (playBtn) {
         playBtn.addEventListener('click', () => {
-            const mainMenu = document.getElementById('mainMenu');
             if (mainMenu) mainMenu.style.display = 'none';
 
             if (gameLoadingScreen) {
@@ -158,7 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     gameLoadingScreen.style.display = 'none';
                     document.body.style.backgroundImage = "url('background/uigame.png')";
                     
-                    const gameUI = document.getElementById('game-ui');
                     if (gameUI) gameUI.style.display = 'block';
 
                     if (clickableAvatar && characterInfoPanel) {
@@ -172,7 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
         });
     }
-
+    
+    // ... (Các hàm xử lý sự kiện còn lại giữ nguyên)
     if (quitBtn && confirmLogoutPanel) {
         quitBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.add('visible');
@@ -211,15 +238,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeAvatarBtn && avatarPanel) {
         closeAvatarBtn.addEventListener('click', () => avatarPanel.classList.remove('visible'));
     }
-
-    if (closeGifcodeBtn && gifcodePanel) {
+     if (closeGifcodeBtn && gifcodePanel) {
         closeGifcodeBtn.addEventListener('click', () => {
             gifcodePanel.classList.remove('visible');
             if (gifcodeInput) gifcodeInput.value = '';
             if (gifcodeMessage) gifcodeMessage.textContent = '';
         });
     }
-
     if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
         submitGifcodeBtn.addEventListener('click', () => {
             const code = gifcodeInput.value.trim();
@@ -227,15 +252,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 gifcodeMessage.textContent = 'Vui lòng nhập mã Gifcode!';
                 return;
             }
-            // Demo: kiểm tra mã hợp lệ (bạn có thể thay bằng API thực tế)
+            const usedCodes = JSON.parse(localStorage.getItem('usedGifcodes')) || [];
             if (code === 'EOR2024') {
-                gifcodeMessage.textContent = 'Đổi Gifcode thành công!';
+                if (usedCodes.includes(code)) {
+                    gifcodeMessage.textContent = 'Mã Gifcode này đã được sử dụng!';
+                } else {
+                    gifcodeMessage.textContent = 'Đổi Gifcode thành công!';
+                    usedCodes.push(code);
+                    localStorage.setItem('usedGifcodes', JSON.stringify(usedCodes));
+                }
             } else {
                 gifcodeMessage.textContent = 'Mã Gifcode không hợp lệ!';
             }
         });
     }
-
     if (sfxToggle) {
         sfxToggle.addEventListener('click', () => {
             sfxEnabled = !sfxEnabled;
@@ -243,7 +273,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateToggleUI();
         });
     }
-
     if (musicToggle) {
         musicToggle.addEventListener('click', () => {
             musicEnabled = !musicEnabled;
@@ -256,14 +285,27 @@ document.addEventListener('DOMContentLoaded', () => {
     updateToggleUI();
 });
 
+/* --- BẮT ĐẦU PHẦN CHỈNH SỬA --- */
+
+// Thay đổi sự kiện window.load để kiểm tra chế độ dev
 window.addEventListener('load', () => {
-    const loadingScreen = document.getElementById('loadingScreen');
-    const mainMenu = document.getElementById('mainMenu');
+    // Kiểm tra xem URL có tham số 'dev' không
+    const isDevMode = new URLSearchParams(window.location.search).has('dev');
 
-    setTimeout(() => {
-        if (loadingScreen) loadingScreen.classList.add('hidden');
-        if (mainMenu) mainMenu.style.display = 'flex';
-    }, 6500);
+    if (isDevMode) {
+        // Nếu là dev mode, vào game ngay
+        enterDevMode();
+    } else {
+        // Nếu không, chạy game bình thường
+        const loadingScreen = document.getElementById('loadingScreen');
+        const mainMenu = document.getElementById('mainMenu');
 
-    simulateNetworkSpeed();
+        setTimeout(() => {
+            if (loadingScreen) loadingScreen.classList.add('hidden');
+            if (mainMenu) mainMenu.style.display = 'flex';
+        }, 6500);
+
+        simulateNetworkSpeed();
+    }
 });
+/* --- KẾT THÚC PHẦN CHỈNH SỬA --- */

@@ -61,16 +61,29 @@ document.addEventListener('DOMContentLoaded', () => {
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
 
+    const GIFCODE_DATABASE = {
+        'EOR2024': {
+            message: 'Đổi code thành công! Bạn nhận được 1,000 Linh Thạch.',
+            items: { linhThach: 1000 } 
+        },
+        'TANTHU': {
+            message: 'Chào mừng tân thủ! Bạn nhận được 100 Linh Thạch và 5 Hồi Khí Đan.',
+            items: { linhThach: 100, hoiKhiDan: 5 }
+        },
+        'UPDATE2025': {
+            message: 'Quà mừng phiên bản mới! Bạn nhận được 500 Linh Thạch.',
+            items: { linhThach: 500 }
+        }
+    };
+
     function setupAvatarClickEvent() {
         if (clickableAvatar && characterInfoPanel) {
             clickableAvatar.removeEventListener('click', handleAvatarClick);
             clickableAvatar.addEventListener('click', handleAvatarClick);
-            console.log('Avatar click event setup complete');
         }
     }
 
     function handleAvatarClick() {
-        console.log('Avatar clicked!');
         if (characterInfoPanel) {
             characterInfoPanel.classList.add('visible');
             attachDichDungEvent();
@@ -83,6 +96,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setupAvatarClickEvent();
         renderAvatar();
     }
+
 
     function enterDevMode() {
         console.log("DEV MODE ACTIVATED: Bỏ qua màn hình chờ.");
@@ -115,7 +129,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         img.src = currentAvatar;
         img.alt = 'avatar';
-        console.log('Avatar rendered:', currentAvatar);
     }
 
     function openAvatarPanel() {
@@ -128,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 img.src = `asset/avt/avt (${i}).jpg`;
                 img.alt = `Avatar ${i}`;
                 img.loading = 'lazy';
-                img.className = (img.src === currentAvatar) ? 'selected' : '';
+                img.className = (img.src.includes(currentAvatar)) ? 'selected' : '';
 
                 img.addEventListener('click', () => {
                     currentAvatar = img.src;
@@ -145,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             Array.from(avatarGrid.children).forEach(child => {
                 child.classList.remove('selected');
-                if (child.src === currentAvatar) child.classList.add('selected');
+                if (child.src.includes(currentAvatar)) child.classList.add('selected');
             });
         }
     }
@@ -187,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     setupGameUI();
                 }, 4000);
             }
-            console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
         });
     }
 
@@ -238,19 +250,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    console.log("--- Bắt đầu kiểm tra các element của Gifcode Panel ---");
+    console.log("Nút Xác nhận (submitGifcodeBtn):", submitGifcodeBtn);
+    console.log("Ô nhập liệu (gifcodeInput):", gifcodeInput);
+    console.log("Vùng thông báo (gifcodeMessage):", gifcodeMessage);
+    console.log("--- Kết thúc kiểm tra ---");
+
     if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
         submitGifcodeBtn.addEventListener('click', () => {
-            const code = gifcodeInput.value.trim();
-            if (!code) {
-                gifcodeMessage.textContent = 'Vui lòng nhập mã Gifcode!';
-                return;
-            }
+            const code = gifcodeInput.value.trim().toUpperCase();
+            
+            console.log("Mã người dùng nhập (sau khi xử lý):", code);
+            console.log("Kiểm tra trong kho dữ liệu:", GIFCODE_DATABASE);
+
             const usedCodes = JSON.parse(localStorage.getItem('usedGifcodes')) || [];
-            if (code === 'EOR2024') {
+            const reward = GIFCODE_DATABASE[code];
+
+            if (reward) {
                 if (usedCodes.includes(code)) {
                     gifcodeMessage.textContent = 'Mã Gifcode này đã được sử dụng!';
                 } else {
-                    gifcodeMessage.textContent = 'Đổi Gifcode thành công!';
+                    gifcodeMessage.textContent = reward.message;
+                    console.log('Trao thưởng:', reward.items);
                     usedCodes.push(code);
                     localStorage.setItem('usedGifcodes', JSON.stringify(usedCodes));
                 }
@@ -258,6 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 gifcodeMessage.textContent = 'Mã Gifcode không hợp lệ!';
             }
         });
+    } else {
+        console.error("LỖI: Không tìm thấy một hoặc nhiều element của Gifcode Panel. Vì vậy, không thể thêm sự kiện click cho nút 'Xác nhận'. Vui lòng kiểm tra lại ID trong file HTML.");
     }
 
     if (sfxToggle) {

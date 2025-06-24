@@ -6,7 +6,7 @@ function simulateNetworkSpeed() {
     if (!speedValueEl || !speedUnitEl || !statusEl) return;
 
     const speedTimeline = [
-        { time: 0,    speedFunc: () => ({ value: (Math.random() * 2.5 + 4.5).toFixed(1), unit: 'MB/s', status: 'good' }) },
+        { time: 0, speedFunc: () => ({ value: (Math.random() * 2.5 + 4.5).toFixed(1), unit: 'MB/s', status: 'good' }) },
         { time: 1300, speedFunc: () => ({ value: Math.floor(Math.random() * 200 + 300), unit: 'KB/s', status: 'unstable' }) },
         { time: 2300, speedFunc: () => ({ value: (Math.random() * 3 + 5).toFixed(1), unit: 'MB/s', status: 'good' }) },
         { time: 4000, speedFunc: () => ({ value: Math.floor(Math.random() * 50 + 50), unit: 'KB/s', status: 'bad' }) },
@@ -61,21 +61,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
 
+    function setupAvatarClickEvent() {
+        if (clickableAvatar && characterInfoPanel) {
+            clickableAvatar.removeEventListener('click', handleAvatarClick);
+            clickableAvatar.addEventListener('click', handleAvatarClick);
+            console.log('Avatar click event setup complete');
+        }
+    }
+
+    function handleAvatarClick() {
+        console.log('Avatar clicked!');
+        if (characterInfoPanel) {
+            characterInfoPanel.classList.add('visible');
+            attachDichDungEvent();
+        }
+    }
+
+    function setupGameUI() {
+        document.body.style.backgroundImage = "url('background/uigame.png')";
+        if (gameUI) gameUI.style.display = 'block';
+        setupAvatarClickEvent();
+        renderAvatar();
+    }
+
     function enterDevMode() {
         console.log("DEV MODE ACTIVATED: Bỏ qua màn hình chờ.");
         if (loadingScreen) loadingScreen.style.display = 'none';
         if (mainMenu) mainMenu.style.display = 'none';
         if (gameLoadingScreen) gameLoadingScreen.style.display = 'none';
-
-        document.body.style.backgroundImage = "url('background/uigame.png')";
-        if (gameUI) gameUI.style.display = 'block';
-
-        if (clickableAvatar && characterInfoPanel) {
-            clickableAvatar.addEventListener('click', () => {
-                characterInfoPanel.classList.add('visible');
-                attachDichDungEvent();
-            });
-        }
+        setupGameUI();
     }
 
     window.enterDevMode = enterDevMode;
@@ -84,7 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!logoutOverlay) return;
         logoutOverlay.classList.add('visible');
         setTimeout(() => {
-            window.location.href = 'game.html'; 
+            window.location.href = 'game.html';
         }, 2500);
     }
 
@@ -96,11 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!img) {
             img = document.createElement('img');
             img.className = 'pixel-avatar-img';
-            frame.innerHTML = ''; 
+            frame.innerHTML = '';
             frame.appendChild(img);
         }
         img.src = currentAvatar;
         img.alt = 'avatar';
+        console.log('Avatar rendered:', currentAvatar);
     }
 
     function openAvatarPanel() {
@@ -112,17 +127,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 const img = document.createElement('img');
                 img.src = `asset/avt/avt (${i}).jpg`;
                 img.alt = `Avatar ${i}`;
-                img.loading = 'lazy'; 
+                img.loading = 'lazy';
                 img.className = (img.src === currentAvatar) ? 'selected' : '';
 
                 img.addEventListener('click', () => {
                     currentAvatar = img.src;
                     localStorage.setItem('selectedAvatar', currentAvatar);
                     renderAvatar();
-                    
+
                     Array.from(avatarGrid.children).forEach(child => child.classList.remove('selected'));
                     img.classList.add('selected');
-                    
+
                     setTimeout(() => avatarPanel.classList.remove('visible'), 200);
                 });
                 avatarGrid.appendChild(img);
@@ -155,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             gifcodeBtn._gifcodeEventAttached = true;
         }
     }
-    
+
     function updateToggleUI() {
         if (sfxToggle) sfxToggle.classList.toggle('active', sfxEnabled);
         if (musicToggle) musicToggle.classList.toggle('active', musicEnabled);
@@ -169,16 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 gameLoadingScreen.classList.add('visible');
                 setTimeout(() => {
                     gameLoadingScreen.style.display = 'none';
-                    document.body.style.backgroundImage = "url('background/uigame.png')";
-                    
-                    if (gameUI) gameUI.style.display = 'block';
-
-                    if (clickableAvatar && characterInfoPanel) {
-                        clickableAvatar.addEventListener('click', () => {
-                            characterInfoPanel.classList.add('visible');
-                            attachDichDungEvent();
-                        });
-                    }
+                    setupGameUI();
                 }, 4000);
             }
             console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
@@ -190,7 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
             confirmLogoutPanel.classList.add('visible');
         });
     }
-    
+
     if (cancelLogoutBtn && confirmLogoutPanel) {
         cancelLogoutBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.remove('visible');
@@ -203,7 +209,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(startLogoutSequence, 200);
         });
     }
-    
+
     if (notificationBtn && notificationPopup) {
         notificationBtn.addEventListener('click', () => notificationPopup.classList.add('visible'));
     }
@@ -211,7 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeNotificationBtn && notificationPopup) {
         closeNotificationBtn.addEventListener('click', () => notificationPopup.classList.remove('visible'));
     }
-    
+
     if (closeSettingsBtn && settingsPanel) {
         closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('visible'));
     }
@@ -223,13 +229,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (closeAvatarBtn && avatarPanel) {
         closeAvatarBtn.addEventListener('click', () => avatarPanel.classList.remove('visible'));
     }
-     if (closeGifcodeBtn && gifcodePanel) {
+
+    if (closeGifcodeBtn && gifcodePanel) {
         closeGifcodeBtn.addEventListener('click', () => {
             gifcodePanel.classList.remove('visible');
             if (gifcodeInput) gifcodeInput.value = '';
             if (gifcodeMessage) gifcodeMessage.textContent = '';
         });
     }
+
     if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
         submitGifcodeBtn.addEventListener('click', () => {
             const code = gifcodeInput.value.trim();
@@ -251,6 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
     if (sfxToggle) {
         sfxToggle.addEventListener('click', () => {
             sfxEnabled = !sfxEnabled;
@@ -258,6 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateToggleUI();
         });
     }
+
     if (musicToggle) {
         musicToggle.addEventListener('click', () => {
             musicEnabled = !musicEnabled;
@@ -268,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderAvatar();
     updateToggleUI();
+    setupAvatarClickEvent();
 });
 
 window.addEventListener('load', () => {
@@ -284,3 +295,12 @@ window.addEventListener('load', () => {
         simulateNetworkSpeed();
     }
 });
+
+function handleAreaClick(areaName, event) {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log(`Clicked on area: ${areaName}`);
+    alert(`Bạn đã click vào khu vực: ${areaName}`);
+}
+
+window.handleAreaClick = handleAreaClick;

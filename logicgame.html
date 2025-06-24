@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="logicgame.css">
 </head>
+
 <body>
 
     <div class="loading-screen" id="loadingScreen">
@@ -82,19 +84,26 @@
     </div>
 
     <div id="game-ui" class="game-ui-container">
+        <svg id="clickable-areas" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events: auto;" viewBox="0 0 1600 997" preserveAspectRatio="xMidYMid slice">
+            <polygon points="1059,184,1022,177,1074,210,1065,227,1022,236,1015,251,1034,260,1055,275,1029,294,993,303,969,291,974,303,986,318,1000,318,1015,322,1015,337,1000,334,1003,351,993,363,972,370,952,375,926,380,936,389,948,394,962,425,962,442,962,468,960,485,981,492,995,487,1019,499,1029,487,1058,492,1086,492,1124,480,1179,473,1210,454,1229,440,1258,442,1289,442,1318,440,1339,430,1356,418,1354,387,1344,365,1330,335,1304,337,1287,316,1304,304,1318,301,1309,277,1282,285,1270,273,1294,263,1294,244,1313,234,1266,230,1254,215,1254,196,1278,198,1287,184,1299,170,1268,175,1242,170,1218,151,1213,120,1161,151,1117,137,1100,166"
+                     fill="transparent" 
+                     style="cursor: pointer;"
+                     onclick="handleAreaClick('Động Phủ', event)" />
+        </svg>
+
         <div class="player-info-wrapper">
             <div id="clickable-avatar-area" class="pixel-avatar-frame">
-                <div class="pixel-avatar-placeholder"></div>
-            </div>
+                </div>
             <div class="pixel-info-box">
                 <div id="player-name-display" class="player-name">Nopee</div>
                 <div id="player-realm-display" class="player-realm">Luyện Khí Tầng 1</div>
             </div>
         </div>
+
         <div class="game-rect" style="left:39.5%;top:50%">Linh Thú</div>
         <div class="game-rect" style="left:48%;top:34%">Võ Kỹ Các</div>
         <div class="game-rect" style="left:39%;top:23%">Tinh Anh Đại Hội</div>
-        <div class="game-rect" style="left:59.5%;top:12%">Động Phủ</div>
+        <div class="game-rect" style="left:59.5%;top:12%" onclick="handleAreaClick('Động Phủ', event)">Động Phủ</div>
         <div class="game-rect" style="left:87%;top:45%">Luyện Đan</div>
         <div class="game-rect" style="left:65%;top:70%">Vạn Bảo Các</div>
         <div class="game-rect" style="left:59%;top:44%">Dược Điền</div>
@@ -117,18 +126,18 @@
                     <div class="stat-item"><span class="stat-label">Pháp Bảo:</span><span class="stat-value">Không Có</span></div>
                     <div class="stat-item"><span class="stat-label">Sinh Mệnh:</span><span class="stat-value">1000</span></div>
                     <div class="stat-item"><span class="stat-label">Linh Khí:</span><span class="stat-value">1/1000</span></div>
-                    <div class="stat-item"><span class="stat-label">Tốc Độ Hấp Thu Linh Khí :</span><span class="stat-value">10 / s</span></div>
+                    <div class="stat-item"><span class="stat-label">Tốc Độ Hấp Thu Linh Khí:</span><span class="stat-value">10 / s</span></div>
                     <div class="stat-item"><span class="stat-label">Công Kích:</span><span class="stat-value">50</span></div>
                     <div class="stat-item"><span class="stat-label">Phòng Thủ:</span><span class="stat-value">25</span></div>
-                    <div class="stat-item"><span class="stat-label">Tỷ Lệ Bạo Kích :</span><span class="stat-value">5%</span></div>
-                    <div class="stat-item"><span class="stat-label">Sát Thương Bạo Kích :</span><span class="stat-value">100</span></div>
+                    <div class="stat-item"><span class="stat-label">Tỷ Lệ Bạo Kích:</span><span class="stat-value">5%</span></div>
+                    <div class="stat-item"><span class="stat-label">Sát Thương Bạo Kích:</span><span class="stat-value">100</span></div>
                 </div>
             </div>
             <div class="action-buttons">
-                <button class="menu-btn small-btn">Dịch Dung</button>
+                <button class="menu-btn small-btn" id="dichDungBtn">Dịch Dung</button>
                 <button class="menu-btn small-btn">Y Phục</button>
-                <button class="menu-btn small-btn">Cài Đặt</button>
-                <button class="menu-btn small-btn">Đổi Gifcode</button>
+                <button class="menu-btn small-btn" id="settingBtn">Cài Đặt</button>
+                <button class="menu-btn small-btn" id="gifcodeBtn">Đổi Gifcode</button>
             </div>
         </div>
     </div>
@@ -166,4 +175,5 @@
 
     <script src="logicgame.js"></script>
 </body>
+
 </html>

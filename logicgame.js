@@ -1,8 +1,3 @@
-//
-// NỘI DUNG TỆP logicgame.js SAU KHI CHỈNH SỬA
-// SAO CHÉP VÀ THAY THẾ TẤT CẢ
-//
-
 function simulateNetworkSpeed() {
     const speedValueEl = document.getElementById('speed-value');
     const speedUnitEl = document.getElementById('speed-unit');
@@ -33,7 +28,6 @@ function simulateNetworkSpeed() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Lấy tất cả các element cần thiết
     const loadingScreen = document.getElementById('loadingScreen');
     const mainMenu = document.getElementById('mainMenu');
     const playBtn = document.getElementById('playBtn');
@@ -67,21 +61,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
 
-    /* --- BẮT ĐẦU PHẦN THÊM MỚI --- */
-
-    // Hàm để vào thẳng giao diện game
     function enterDevMode() {
         console.log("DEV MODE ACTIVATED: Bỏ qua màn hình chờ.");
-        // Ẩn tất cả các màn hình không cần thiết
         if (loadingScreen) loadingScreen.style.display = 'none';
         if (mainMenu) mainMenu.style.display = 'none';
         if (gameLoadingScreen) gameLoadingScreen.style.display = 'none';
 
-        // Hiển thị giao diện game ngay lập tức
         document.body.style.backgroundImage = "url('background/uigame.png')";
         if (gameUI) gameUI.style.display = 'block';
 
-        // Gắn các sự kiện cần thiết cho giao diện game
         if (clickableAvatar && characterInfoPanel) {
             clickableAvatar.addEventListener('click', () => {
                 characterInfoPanel.classList.add('visible');
@@ -89,10 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     }
-    // Dành cho việc gọi hàm từ console
-    window.enterDevMode = enterDevMode;
 
-    /* --- KẾT THÚC PHẦN THÊM MỚI --- */
+    window.enterDevMode = enterDevMode;
 
     function startLogoutSequence() {
         if (!logoutOverlay) return;
@@ -198,8 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Bắt đầu cuộc phiêu lưu tại Exile of Realms!');
         });
     }
-    
-    // ... (Các hàm xử lý sự kiện còn lại giữ nguyên)
+
     if (quitBtn && confirmLogoutPanel) {
         quitBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.add('visible');
@@ -285,27 +270,17 @@ document.addEventListener('DOMContentLoaded', () => {
     updateToggleUI();
 });
 
-/* --- BẮT ĐẦU PHẦN CHỈNH SỬA --- */
-
-// Thay đổi sự kiện window.load để kiểm tra chế độ dev
 window.addEventListener('load', () => {
-    // Kiểm tra xem URL có tham số 'dev' không
     const isDevMode = new URLSearchParams(window.location.search).has('dev');
-
     if (isDevMode) {
-        // Nếu là dev mode, vào game ngay
         enterDevMode();
     } else {
-        // Nếu không, chạy game bình thường
         const loadingScreen = document.getElementById('loadingScreen');
         const mainMenu = document.getElementById('mainMenu');
-
         setTimeout(() => {
             if (loadingScreen) loadingScreen.classList.add('hidden');
             if (mainMenu) mainMenu.style.display = 'flex';
         }, 6500);
-
         simulateNetworkSpeed();
     }
 });
-/* --- KẾT THÚC PHẦN CHỈNH SỬA --- */

@@ -772,29 +772,27 @@ body {
 
 .game-rect {
     position: absolute;
-    width: 42px; /* Tăng chiều rộng để chứa chữ */
+    width: 42px; 
     height: 95px;
-    border: 3px solid #222;
+    border: 1px solid #000000;
     border-radius: 10px;
-    background: rgba(0, 0, 0, 0.6); /* << ĐÃ THAY ĐỔI: Nền đen mờ */
+    background: rgba(48, 19, 19, 0.6); 
     z-index: 200;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     
-    /* === THÊM MỚI ĐỂ HIỂN THỊ CHỮ === */
-    color: #FFEB3B; /* Màu chữ vàng giống chủ đề game */
-    font-family: 'Silkscreen', sans-serif; /* Font chữ pixel của game */
+    color: #FFEB3B; 
+    font-family: 'Silkscreen', sans-serif;
     font-size: 11px;
     text-shadow: 2px 2px 0 #000;
-    display: flex; /* Bật Flexbox để căn chỉnh */
-    justify-content: center; /* Căn giữa theo chiều ngang */
-    align-items: center; /* Căn giữa theo chiều dọc */
-    text-align: center; /* Đảm bảo chữ luôn ở giữa */
-    padding: 5px; /* Thêm khoảng đệm nhỏ */
-    cursor: pointer; /* Biến con trỏ thành hình bàn tay khi di chuột */
-    transition: background 0.2s ease, transform 0.1s ease; /* Hiệu ứng chuyển động */
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    text-align: center; 
+    padding: 5px; 
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease; 
 }
 
-/* Thêm hiệu ứng khi di chuột vào */
 .game-rect:hover {
     background: rgba(0, 0, 0, 0.8);
     transform: scale(1.05);

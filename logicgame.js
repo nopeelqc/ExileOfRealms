@@ -323,7 +323,7 @@ function handleAreaClick(areaName, event) {
     event.preventDefault();
     event.stopPropagation();
     console.log(`Clicked on area: ${areaName}`);
-    alert(`Bạn đã click vào khu vực: ${areaName}`);
+    alert(` ${areaName}`);
 }
 
 window.handleAreaClick = handleAreaClick;

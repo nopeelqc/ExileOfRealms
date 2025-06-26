@@ -84,83 +84,55 @@
     </div>
 
     <div id="game-ui" class="game-ui-container">
+        <div class="currency-bar-wrapper">
+            <div class="currency-bar" id="linh-thach-bar">
+                <img src="asset/ui/linhthach.png" alt="Linh Thạch" class="currency-icon">
+                <span id="linhThachAmount" class="currency-amount">0</span>
+                <button class="add-currency-btn">+</button>
+            </div>
+            <div class="currency-bar" id="tien-ngoc-bar">
+                <img src="asset/ui/G.png" alt="Hỗn Độn Thạch" class="currency-icon">
+                <span id="tienNgocAmount" class="currency-amount">0</span>
+                <button class="add-currency-btn">+</button>
+            </div>
+        </div>
+
         <svg id="clickable-areas-container" style="position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; pointer-events: none;" preserveAspectRatio="xMidYMid slice">
-        
             <svg width="100%" height="100%" viewBox="0 0 1600 997" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1059,184,1022,177,1074,210,1065,227,1022,236,1015,251,1034,260,1055,275,1029,294,993,303,969,291,974,303,986,318,1000,318,1015,322,1015,337,1000,334,1003,351,993,363,972,370,952,375,926,380,936,389,948,394,962,425,962,442,962,468,960,485,981,492,995,487,1019,499,1029,487,1058,492,1086,492,1124,480,1179,473,1210,454,1229,440,1258,442,1289,442,1318,440,1339,430,1356,418,1354,387,1344,365,1330,335,1304,337,1287,316,1304,304,1318,301,1309,277,1282,285,1270,273,1294,263,1294,244,1313,234,1266,230,1254,215,1254,196,1278,198,1287,184,1299,170,1268,175,1242,170,1218,151,1213,120,1161,151,1117,137,1100,166"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Động Phủ', event)" />
+                <polygon points="1059,184,1022,177,1074,210,1065,227,1022,236,1015,251,1034,260,1055,275,1029,294,993,303,969,291,974,303,986,318,1000,318,1015,322,1015,337,1000,334,1003,351,993,363,972,370,952,375,926,380,936,389,948,394,962,425,962,442,962,468,960,485,981,492,995,487,1019,499,1029,487,1058,492,1086,492,1124,480,1179,473,1210,454,1229,440,1258,442,1289,442,1318,440,1339,430,1356,418,1354,387,1344,365,1330,335,1304,337,1287,316,1304,304,1318,301,1309,277,1282,285,1270,273,1294,263,1294,244,1313,234,1266,230,1254,215,1254,196,1278,198,1287,184,1299,170,1268,175,1242,170,1218,151,1213,120,1161,151,1117,137,1100,166" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Động Phủ', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1203,599,1191,622,1183,651,1169,670,1152,688,1133,695,1113,704,1094,699,1093,646,1042,646,1045,765,1093,765,1094,707,1108,727,1121,734,1137,736,1154,741,1154,755,1152,778,1125,799,1093,799,1094,812,1121,821,1125,853,1177,849,1179,900,1201,904,1401,916,1438,914,1479,904,1491,895,1488,853,1501,814,1515,807,1525,783,1528,726,1549,724,1571,700,1574,676,1530,695,1511,683,1488,649,1482,602,1466,626,1213,617,1213,610"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Vạn Bảo Các', event)" />
+                <polygon points="1203,599,1191,622,1183,651,1169,670,1152,688,1133,695,1113,704,1094,699,1093,646,1042,646,1045,765,1093,765,1094,707,1108,727,1121,734,1137,736,1154,741,1154,755,1152,778,1125,799,1093,799,1094,812,1121,821,1125,853,1177,849,1179,900,1201,904,1401,916,1438,914,1479,904,1491,895,1488,853,1501,814,1515,807,1525,783,1528,726,1549,724,1571,700,1574,676,1530,695,1511,683,1488,649,1482,602,1466,626,1213,617,1213,610" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Vạn Bảo Các', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1127,851,1129,972,1172,972,1154,991,1123,1003,1139,1017,1139,1036,1119,1061,1102,1083,1080,1098,1049,1108,1076,1116,1090,1141,1333,1141,1401,1141,1463,1011,1438,1007,1419,989,1405,954,1388,976,1213,947,1195,927,1178,912,1178,851"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Dược Điền', event)" />
+                <polygon points="1127,851,1129,972,1172,972,1154,991,1123,1003,1139,1017,1139,1036,1119,1061,1102,1083,1080,1098,1049,1108,1076,1116,1090,1141,1333,1141,1401,1141,1463,1011,1438,1007,1419,989,1405,954,1388,976,1213,947,1195,927,1178,912,1178,851" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Dược Điền', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1012,459,997,482,977,496,950,498,954,510,971,519,923,521,923,642,971,640,1078,636,1121,613,1125,498,1080,490,1074,465"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Võ Kỹ Các', event)" />
+                <polygon points="1012,459,997,482,977,496,950,498,954,510,971,519,923,521,923,642,971,640,1078,636,1121,613,1125,498,1080,490,1074,465" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Võ Kỹ Các', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="862,344,728,342,726,465,773,465,779,533,790,556,818,568,884,566,911,560,923,523,950,498,1010,461,1131,453,1135,473,1166,459,1160,438,1109,405,1055,414,1039,387,1020,360,985,361,971,363,942,359,927,357,921,363,909,357,909,353,925,359,927,357,925,359"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Linh Thú', event)" />
+                <polygon points="862,344,728,342,726,465,773,465,779,533,790,556,818,568,884,566,911,560,923,523,950,498,1010,461,1131,453,1135,473,1166,459,1160,438,1109,405,1055,414,1039,387,1020,360,985,361,971,363,942,359,927,357,921,363,909,357,909,353,925,359,927,357,925,359" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Linh Thú', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="796,713,794,737,771,762,750,772,724,781,705,779,687,791,685,750,631,748,633,863,615,861,549,919,571,976,666,995,685,1044,703,1075,713,1089,977,1091,1098,1015,1125,921,1086,896,1016,879,1020,847,1074,814,1004,793,958,719,938,739,816,727"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Tông Môn', event)" />
+                <polygon points="796,713,794,737,771,762,750,772,724,781,705,779,687,791,685,750,631,748,633,863,615,861,549,919,571,976,666,995,685,1044,703,1075,713,1089,977,1091,1098,1015,1125,921,1086,896,1016,879,1020,847,1074,814,1004,793,958,719,938,739,816,727" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Tông Môn', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1660,288,1658,407,1654,427,1650,495,1678,535,1796,528,1862,485,1860,380,1746,370,1705,289"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Vạn Thú Sơn', event)" />
+                <polygon points="1660,288,1658,407,1654,427,1650,495,1678,535,1796,528,1862,485,1860,380,1746,370,1705,289" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Vạn Thú Sơn', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1683,614,1668,569,1619,568,1623,691,1656,694,1652,739,1685,807,1705,798,1732,761,1757,718,1765,661,1783,694,1800,671,1814,691,1839,700,1860,700,1862,556,1786,558,1777,530,1746,585"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Luyện Đan', event)" />
+                <polygon points="1683,614,1668,569,1619,568,1623,691,1656,694,1652,739,1685,807,1705,798,1732,761,1757,718,1765,661,1783,694,1800,671,1814,691,1839,700,1860,700,1862,556,1786,558,1777,530,1746,585" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Luyện Đan', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="1761,660,1757,713,1705,790,1685,812,1631,820,1604,794,1594,812,1598,835,1615,847,1633,860,1654,870,1691,872,1693,899,1685,965,1666,989,1642,886,1590,890,1590,1002,1563,1043,1623,1080,1629,1133,1856,1135,1862,701"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Luyện Khí', event)" />
+                <polygon points="1761,660,1757,713,1705,790,1685,812,1631,820,1604,794,1594,812,1598,835,1615,847,1633,860,1654,870,1691,872,1693,899,1685,965,1666,989,1642,886,1590,890,1590,1002,1563,1043,1623,1080,1629,1133,1856,1135,1862,701" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Luyện Khí', event)" />
             </svg>
-
             <svg width="100%" height="100%" viewBox="0 0 1863 1250" preserveAspectRatio="xMidYMid slice">
-                <polygon points="129,454,112,492,90,510,59,508,84,535,78,562,55,589,65,634,88,652,106,661,164,656,205,650,230,624,252,591,259,582,242,572,246,535,238,502,166,457"
-                        fill="transparent" 
-                        style="cursor: pointer; pointer-events: auto;"
-                        onclick="handleAreaClick('Tinh Anh Đại Hội', event)" />
+                <polygon points="129,454,112,492,90,510,59,508,84,535,78,562,55,589,65,634,88,652,106,661,164,656,205,650,230,624,252,591,259,582,242,572,246,535,238,502,166,457" fill="transparent" style="cursor: pointer; pointer-events: auto;" onclick="handleAreaClick('Tinh Anh Đại Hội', event)" />
             </svg>
-
         </svg>
 
         <div class="player-info-wrapper">
             <div id="clickable-avatar-area" class="pixel-avatar-frame">
-                </div>
+            </div>
             <div class="pixel-info-box">
                 <div id="player-name-display" class="player-name">Nopee</div>
                 <div id="player-realm-display" class="player-realm">Luyện Khí Tầng 1</div>
@@ -203,7 +175,7 @@
             </div>
             <div class="action-buttons">
                 <button class="menu-btn small-btn" id="dichDungBtn">Dịch Dung</button>
-                <button class="menu-btn small-btn">Y Phục</button>
+                <button class="menu-btn small-btn" id="yphucBtn">Y Phục</button>
                 <button class="menu-btn small-btn" id="settingBtn">Cài Đặt</button>
                 <button class="menu-btn small-btn" id="gifcodeBtn">Đổi Gifcode</button>
             </div>
@@ -238,6 +210,16 @@
                 <button id="submit-gifcode-btn" class="menu-btn small-btn">Xác Nhận</button>
                 <div id="gifcode-message" style="color:#FFEB3B;font-size:16px;"></div>
             </div>
+        </div>
+    </div>
+
+    <div id="gifcode-reward-panel" class="panel-overlay">
+        <div class="panel-box" style="max-width: 450px; max-height: 500px; text-align:center;">
+            <h2 class="panel-title" style="color:#22c55e;">Đổi Thưởng Thành Công!</h2>
+            <button id="close-reward-panel-btn" class="panel-close-btn">&times;</button>
+            <div id="reward-list-container" class="panel-content" style="flex-direction:column;align-items:center;justify-content:center;gap:15px;">
+            </div>
+            <button id="confirm-reward-btn" class="menu-btn small-btn" style="margin-top:20px;">Xác Nhận</button>
         </div>
     </div>
 

@@ -601,6 +601,75 @@ body {
     margin-top: 5px;
 }
 
+.currency-bar-wrapper {
+    position: absolute;
+    top: 5px;
+    right: 45px;
+    display: flex;
+    flex-direction: row;
+    gap: 35px;
+    z-index: 1000;
+    pointer-events: auto;
+}
+
+.currency-bar {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    background-color: #383838;
+    border: 3px solid #1a1a1a;
+    padding: 0 5px;
+    min-width: 200px;
+    box-shadow: inset -3px -3px 0px 0px #222,
+        inset 3px 3px 0px 0px #666;
+}
+
+.currency-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 8px;
+    image-rendering: pixelated;
+}
+
+.currency-amount {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    text-shadow: 2px 2px 0 #000;
+    flex-grow: 1;
+    text-align: right;
+    margin-right: 8px;
+}
+
+.add-currency-btn {
+    width: 28px;
+    height: 28px;
+    background-color: #2b7a3a;
+    border: 2px solid #1a1a1a;
+    color: #FFEB3B;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: inset -2px -2px 0px 0px #1c5026,
+        inset 2px 2px 0px 0px #4aa95b;
+    transition: all 0.05s linear;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 3px;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.add-currency-btn:hover {
+    background-color: #3a9d4e;
+}
+
+.add-currency-btn:active {
+    transform: translateY(1px);
+    box-shadow: inset -1px -1px 0px 0px #1c5026,
+        inset 1px 1px 0px 0px #4aa95b;
+}
+
 .panel-box {
     position: relative;
     width: 80%;
@@ -737,4 +806,33 @@ body {
 
 .hide-scrollbar::-webkit-scrollbar {
     display: none;
+}
+
+.reward-item {
+    display: flex;
+    align-items: center;
+    background-color: #383838;
+    padding: 8px 15px;
+    width: 80%;
+    border: 3px solid #1a1a1a;
+    box-shadow: inset -3px -3px 0px 0px #222,
+        inset 3px 3px 0px 0px #666;
+    gap: 15px;
+}
+
+.reward-item-image {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    image-rendering: pixelated;
+    background-color: #222;
+    border: 2px solid #555;
+    padding: 4px;
+}
+
+.reward-item-info {
+    font-family: 'Silkscreen', sans-serif;
+    font-size: 16px;
+    color: #FFEB3B;
+    text-shadow: 2px 2px 0 #000;
 }

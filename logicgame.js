@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const sfxToggle = document.getElementById('sfx-toggle');
     const musicToggle = document.getElementById('music-toggle');
     const gameUI = document.getElementById('game-ui');
+    const dongPhuOverlay = document.getElementById('dongphu-overlay');
+    const dongPhuCloseBtn = document.getElementById('dongphu-close-btn');
 
     let currentAvatar = localStorage.getItem('selectedAvatar') || 'asset/avt/avt (1).jpg';
     let sfxEnabled = localStorage.getItem('sfxEnabled') !== 'false';
@@ -205,7 +207,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function enterDevMode() {
-        console.log("DEV MODE ACTIVATED: Bỏ qua màn hình chờ.");
         if (loadingScreen) loadingScreen.style.display = 'none';
         if (mainMenu) mainMenu.style.display = 'none';
         if (gameLoadingScreen) gameLoadingScreen.style.display = 'none';
@@ -357,10 +358,40 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function showDongPhuOverlay() {
+        if (!dongPhuOverlay) return;
+        dongPhuOverlay.classList.remove('closing');
+        dongPhuOverlay.classList.add('visible');
+    }
+
+    function closeDongPhuOverlay() {
+        if (!dongPhuOverlay) return;
+        dongPhuOverlay.classList.add('closing');
+        setTimeout(() => {
+            dongPhuOverlay.classList.remove('visible');
+            dongPhuOverlay.classList.remove('closing');
+        }, 400);
+    }
+
+    if (dongPhuCloseBtn) {
+        dongPhuCloseBtn.addEventListener('click', closeDongPhuOverlay);
+    }
+
+    window.handleAreaClick = function(areaName, event) {
+        event.preventDefault();
+        event.stopPropagation();
+        if (areaName === 'Động Phủ') {
+            showDongPhuOverlay();
+            return;
+        }
+        alert(` ${areaName}`);
+    };
+
     renderAvatar();
     updateToggleUI();
     setupAvatarClickEvent();
 });
+
 window.addEventListener('load', () => {
     function simulateNetworkSpeed() {
         const speedValueEl = document.getElementById('speed-value');
@@ -439,11 +470,3 @@ window.addEventListener('load', () => {
         simulateNetworkSpeed();
     }
 });
-
-function handleAreaClick(areaName, event) {
-    event.preventDefault();
-    event.stopPropagation();
-    console.log(`Clicked on area: ${areaName}`);
-    alert(` ${areaName}`);
-}
-window.handleAreaClick = handleAreaClick;

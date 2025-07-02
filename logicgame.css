@@ -898,7 +898,6 @@ body {
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(8px) grayscale(40%);
     opacity: 0;
-    /* Hiệu ứng mờ dần cho nền, đồng bộ 0.4s */
     transition: opacity 0.4s ease;
 }
 
@@ -914,19 +913,20 @@ body {
     max-height: 100vh !important;
     margin: 0 !important;
     box-shadow: none !important;
-
-    /* Trạng thái mặc định: ẩn ở phía dưới màn hình */
+    border: none !important;
+    padding: 0 !important;
+    background-image: url('asset/ui/dongphu.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     transform: translateY(100%);
-    /* Thời gian chuyển động đồng bộ là 0.4s cho cả mở và đóng */
     transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* Hiệu ứng MỞ: trượt từ dưới lên */
 .dongphu-fullscreen.visible .panel-box {
     transform: translateY(0);
 }
 
-/* Hiệu ứng ĐÓNG: trượt từ trên xuống (về lại vị trí ban đầu) */
 .dongphu-fullscreen.closing .panel-box {
     transform: translateY(100%);
 }

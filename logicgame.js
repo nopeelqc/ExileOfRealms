@@ -39,6 +39,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let musicEnabled = localStorage.getItem('musicEnabled') !== 'false';
     let linhThach = parseInt(localStorage.getItem('linhThach')) || 0;
     let tienNgoc = parseInt(localStorage.getItem('tienNgoc')) || 0;
+    let playerLinhKhi = parseInt(localStorage.getItem('playerLinhKhi')) || 0;
+    let playerRealmLevel = parseInt(localStorage.getItem('playerRealmLevel')) || 1;
+    let linhKhiDisplayIntervalId = null;
 
     const GIFCODE_DATABASE = {
         'EOR2024': {
@@ -85,6 +88,60 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const luyenKhiRealmData = [{
+        level: 1,
+        name: "Luyện Khí Tầng 1",
+        required: 1000,
+        rate: 10
+    }, {
+        level: 2,
+        name: "Luyện Khí Tầng 2",
+        required: 2000,
+        rate: 20
+    }, {
+        level: 3,
+        name: "Luyện Khí Tầng 3",
+        required: 3000,
+        rate: 30
+    }, {
+        level: 4,
+        name: "Luyện Khí Tầng 4",
+        required: 4000,
+        rate: 40
+    }, {
+        level: 5,
+        name: "Luyện Khí Tầng 5",
+        required: 5000,
+        rate: 50
+    }, {
+        level: 6,
+        name: "Luyện Khí Tầng 6",
+        required: 6000,
+        rate: 100
+    }, {
+        level: 7,
+        name: "Luyện Khí Tầng 7",
+        required: 7000,
+        rate: 100
+    }, {
+        level: 8,
+        name: "Luyện Khí Tầng 8",
+        required: 8000,
+        rate: 100
+    }, {
+        level: 9,
+        name: "Luyện Khí Tầng 9",
+        required: 9000,
+        rate: 100
+    }, ];
+
+    setInterval(() => {
+        if (playerRealmLevel > luyenKhiRealmData.length) return;
+        const currentRate = luyenKhiRealmData[playerRealmLevel - 1].rate;
+        playerLinhKhi += currentRate;
+        localStorage.setItem('playerLinhKhi', playerLinhKhi);
+    }, 1000);
+
     function formatNumber(num) {
         if (num >= 1000000000000000000) {
             return (num / 1000000000000000000).toFixed(1).replace(/\.0$/, '') + ' BB';
@@ -122,8 +179,6 @@ document.addEventListener('DOMContentLoaded', () => {
         updateCurrencyBar();
     }
 
-    updateCurrencyBar();
-
     function showRewardPanel(rewards) {
         if (!rewardListContainer || !gifcodeRewardPanel) return;
         rewardListContainer.innerHTML = '';
@@ -138,51 +193,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         gifcodePanel.classList.remove('visible');
         gifcodeRewardPanel.classList.add('visible');
-    }
-
-    if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
-        submitGifcodeBtn.addEventListener('click', () => {
-            const code = gifcodeInput.value.trim().toUpperCase();
-            const usedCodes = JSON.parse(localStorage.getItem('usedGifcodes')) || [];
-            const rewardData = GIFCODE_DATABASE[code];
-            gifcodeMessage.textContent = '';
-            if (rewardData) {
-                if (usedCodes.includes(code)) {
-                    gifcodeMessage.textContent = 'Mã Gifcode này đã được sử dụng!';
-                } else {
-                    if (rewardData.rewards) {
-                        rewardData.rewards.forEach(item => {
-                            addCurrency(item.type, item.quantity);
-                        });
-                    }
-                    usedCodes.push(code);
-                    localStorage.setItem('usedGifcodes', JSON.stringify(usedCodes));
-                    showRewardPanel(rewardData.rewards);
-                }
-            } else {
-                gifcodeMessage.textContent = 'Mã Gifcode không hợp lệ!';
-            }
-        });
-    }
-
-    if (closeGifcodeBtn && gifcodePanel) {
-        closeGifcodeBtn.addEventListener('click', () => {
-            gifcodePanel.classList.remove('visible');
-            if (gifcodeInput) gifcodeInput.value = '';
-            if (gifcodeMessage) gifcodeMessage.textContent = '';
-        });
-    }
-
-    if (closeRewardPanelBtn && gifcodeRewardPanel) {
-        closeRewardPanelBtn.addEventListener('click', () => {
-            gifcodeRewardPanel.classList.remove('visible');
-        });
-    }
-
-    if (confirmRewardBtn && gifcodeRewardPanel) {
-        confirmRewardBtn.addEventListener('click', () => {
-            gifcodeRewardPanel.classList.remove('visible');
-        });
     }
 
     function setupAvatarClickEvent() {
@@ -204,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (gameUI) gameUI.style.display = 'block';
         setupAvatarClickEvent();
         renderAvatar();
+        updatePlayerInfo();
     }
 
     function enterDevMode() {
@@ -290,6 +301,192 @@ document.addEventListener('DOMContentLoaded', () => {
         if (musicToggle) musicToggle.classList.toggle('active', musicEnabled);
     }
 
+    function showDongPhuOverlay() {
+        if (!dongPhuOverlay) return;
+        const contentArea = dongPhuOverlay.querySelector('.panel-content');
+        if (contentArea.innerHTML === '') {
+            const thienImage = document.createElement('img');
+            thienImage.src = 'asset/ui/thien.png';
+            thienImage.alt = 'Thiên';
+            thienImage.className = 'thien-image';
+
+            const particleContainer = document.createElement('div');
+            particleContainer.className = 'spirit-particles-container';
+            for (let i = 0; i < 25; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'spirit-particle';
+                particleContainer.appendChild(particle);
+            }
+            contentArea.appendChild(thienImage);
+            contentArea.appendChild(particleContainer);
+        }
+        dongPhuOverlay.classList.remove('closing');
+        dongPhuOverlay.classList.add('visible');
+        startLinhKhiDisplayUpdates();
+    }
+
+    function closeDongPhuOverlay() {
+        if (linhKhiDisplayIntervalId) {
+            clearInterval(linhKhiDisplayIntervalId);
+            linhKhiDisplayIntervalId = null;
+        }
+        if (!dongPhuOverlay) return;
+        dongPhuOverlay.classList.add('closing');
+        setTimeout(() => {
+            dongPhuOverlay.classList.remove('visible');
+            dongPhuOverlay.classList.remove('closing');
+            const contentArea = dongPhuOverlay.querySelector('.panel-content');
+            if (contentArea) {
+                contentArea.innerHTML = '';
+            }
+        }, 400);
+    }
+
+    function startLinhKhiDisplayUpdates() {
+        showProgressBar();
+        if (linhKhiDisplayIntervalId) {
+            clearInterval(linhKhiDisplayIntervalId);
+        }
+        linhKhiDisplayIntervalId = setInterval(() => {
+            if (playerRealmLevel > luyenKhiRealmData.length) {
+                clearInterval(linhKhiDisplayIntervalId);
+                showMaxLevelMessage();
+                return;
+            }
+            updateProgressBar();
+            const required = luyenKhiRealmData[playerRealmLevel - 1].required;
+            const contentArea = dongPhuOverlay.querySelector('.panel-content');
+            const breakthroughBtn = contentArea.querySelector('#breakthroughBtn');
+            if (playerLinhKhi >= required) {
+                if (!breakthroughBtn) {
+                    createBreakthroughButton();
+                }
+            } else {
+                if (breakthroughBtn) {
+                    breakthroughBtn.remove();
+                }
+            }
+        }, 500);
+    }
+
+    function createBreakthroughButton() {
+        const contentArea = dongPhuOverlay.querySelector('.panel-content');
+        if (!contentArea || contentArea.querySelector('#breakthroughBtn')) return;
+        const breakthroughContainer = document.createElement('div');
+        breakthroughContainer.id = 'breakthroughBtn';
+        const breakthroughText = document.createElement('span');
+        breakthroughText.textContent = 'Đột Phá';
+        breakthroughContainer.appendChild(breakthroughText);
+        breakthroughContainer.onclick = handleBreakthrough;
+        contentArea.appendChild(breakthroughContainer);
+    }
+
+    function handleBreakthrough() {
+        const currentLevelData = luyenKhiRealmData[playerRealmLevel - 1];
+        if (!currentLevelData) return;
+        const required = currentLevelData.required;
+        if (playerLinhKhi >= required) {
+            if (playerRealmLevel >= luyenKhiRealmData.length) {
+                alert("Bạn đã đạt cảnh giới tối đa của Luyện Khí Kỳ!");
+                const breakthroughBtn = document.getElementById('breakthroughBtn');
+                if (breakthroughBtn) breakthroughBtn.disabled = true;
+                return;
+            }
+            playerLinhKhi -= required;
+            playerRealmLevel++;
+            localStorage.setItem('playerLinhKhi', playerLinhKhi);
+            localStorage.setItem('playerRealmLevel', playerRealmLevel);
+            updatePlayerInfo();
+            const breakthroughBtn = document.getElementById('breakthroughBtn');
+            if (breakthroughBtn) breakthroughBtn.remove();
+        }
+    }
+
+    function showProgressBar() {
+        const contentArea = dongPhuOverlay.querySelector('.panel-content');
+        if (!contentArea || contentArea.querySelector('#linhKhiContainer')) return;
+        const linhKhiContainer = document.createElement('div');
+        linhKhiContainer.id = 'linhKhiContainer';
+        const linhKhiBar = document.createElement('div');
+        linhKhiBar.id = 'linhKhiBar';
+        const linhKhiText = document.createElement('span');
+        linhKhiText.id = 'linhKhiText';
+        linhKhiContainer.appendChild(linhKhiBar);
+        linhKhiContainer.appendChild(linhKhiText);
+        contentArea.appendChild(linhKhiContainer);
+        updateProgressBar();
+    }
+
+    function updateProgressBar() {
+        const linhKhiBar = document.getElementById('linhKhiBar');
+        const linhKhiText = document.getElementById('linhKhiText');
+        if (!linhKhiBar || !linhKhiText || playerRealmLevel > luyenKhiRealmData.length) return;
+        const currentLevelData = luyenKhiRealmData[playerRealmLevel - 1];
+        const required = currentLevelData.required;
+        const percentage = Math.min((playerLinhKhi / required) * 100, 100);
+        linhKhiBar.style.width = `${percentage}%`;
+        linhKhiText.textContent = `${formatNumber(playerLinhKhi)} / ${formatNumber(required)}`;
+    }
+
+    function showMaxLevelMessage() {
+        const contentArea = dongPhuOverlay.querySelector('.panel-content');
+        if (!contentArea) return;
+        showProgressBar();
+        const linhKhiBar = document.getElementById('linhKhiBar');
+        if (linhKhiBar) linhKhiBar.style.width = '100%';
+        const linhKhiText = document.getElementById('linhKhiText');
+        if (linhKhiText) linhKhiText.textContent = "Đã đạt cảnh giới tối đa";
+    }
+
+    function updatePlayerInfo() {
+        if (playerRealmLevel > luyenKhiRealmData.length) return;
+        const currentLevelData = luyenKhiRealmData[playerRealmLevel - 1];
+        const realmText = currentLevelData.name;
+        const realmDisplay = document.getElementById('player-realm-display');
+        if (realmDisplay) realmDisplay.textContent = realmText;
+    }
+
+    if (submitGifcodeBtn && gifcodeInput && gifcodeMessage) {
+        submitGifcodeBtn.addEventListener('click', () => {
+            const code = gifcodeInput.value.trim().toUpperCase();
+            const usedCodes = JSON.parse(localStorage.getItem('usedGifcodes')) || [];
+            const rewardData = GIFCODE_DATABASE[code];
+            gifcodeMessage.textContent = '';
+            if (rewardData) {
+                if (usedCodes.includes(code)) {
+                    gifcodeMessage.textContent = 'Mã Gifcode này đã được sử dụng!';
+                } else {
+                    if (rewardData.rewards) {
+                        rewardData.rewards.forEach(item => {
+                            addCurrency(item.type, item.quantity);
+                        });
+                    }
+                    usedCodes.push(code);
+                    localStorage.setItem('usedGifcodes', JSON.stringify(usedCodes));
+                    showRewardPanel(rewardData.rewards);
+                }
+            } else {
+                gifcodeMessage.textContent = 'Mã Gifcode không hợp lệ!';
+            }
+        });
+    }
+    if (closeGifcodeBtn && gifcodePanel) {
+        closeGifcodeBtn.addEventListener('click', () => {
+            gifcodePanel.classList.remove('visible');
+            if (gifcodeInput) gifcodeInput.value = '';
+            if (gifcodeMessage) gifcodeMessage.textContent = '';
+        });
+    }
+    if (closeRewardPanelBtn && gifcodeRewardPanel) {
+        closeRewardPanelBtn.addEventListener('click', () => {
+            gifcodeRewardPanel.classList.remove('visible');
+        });
+    }
+    if (confirmRewardBtn && gifcodeRewardPanel) {
+        confirmRewardBtn.addEventListener('click', () => {
+            gifcodeRewardPanel.classList.remove('visible');
+        });
+    }
     if (playBtn) {
         playBtn.addEventListener('click', () => {
             if (mainMenu) mainMenu.style.display = 'none';
@@ -302,46 +499,37 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     if (quitBtn && confirmLogoutPanel) {
         quitBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.add('visible');
         });
     }
-
     if (cancelLogoutBtn && confirmLogoutPanel) {
         cancelLogoutBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.remove('visible');
         });
     }
-
     if (confirmLogoutBtn && confirmLogoutPanel) {
         confirmLogoutBtn.addEventListener('click', () => {
             confirmLogoutPanel.classList.remove('visible');
             setTimeout(startLogoutSequence, 200);
         });
     }
-
     if (notificationBtn && notificationPopup) {
         notificationBtn.addEventListener('click', () => notificationPopup.classList.add('visible'));
     }
-
     if (closeNotificationBtn && notificationPopup) {
         closeNotificationBtn.addEventListener('click', () => notificationPopup.classList.remove('visible'));
     }
-
     if (closeSettingsBtn && settingsPanel) {
         closeSettingsBtn.addEventListener('click', () => settingsPanel.classList.remove('visible'));
     }
-
     if (closeCharacterInfoBtn && characterInfoPanel) {
         closeCharacterInfoBtn.addEventListener('click', () => characterInfoPanel.classList.remove('visible'));
     }
-
     if (closeAvatarBtn && avatarPanel) {
         closeAvatarBtn.addEventListener('click', () => avatarPanel.classList.remove('visible'));
     }
-
     if (sfxToggle) {
         sfxToggle.addEventListener('click', () => {
             sfxEnabled = !sfxEnabled;
@@ -349,7 +537,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateToggleUI();
         });
     }
-
     if (musicToggle) {
         musicToggle.addEventListener('click', () => {
             musicEnabled = !musicEnabled;
@@ -357,22 +544,6 @@ document.addEventListener('DOMContentLoaded', () => {
             updateToggleUI();
         });
     }
-
-    function showDongPhuOverlay() {
-        if (!dongPhuOverlay) return;
-        dongPhuOverlay.classList.remove('closing');
-        dongPhuOverlay.classList.add('visible');
-    }
-
-    function closeDongPhuOverlay() {
-        if (!dongPhuOverlay) return;
-        dongPhuOverlay.classList.add('closing');
-        setTimeout(() => {
-            dongPhuOverlay.classList.remove('visible');
-            dongPhuOverlay.classList.remove('closing');
-        }, 400);
-    }
-
     if (dongPhuCloseBtn) {
         dongPhuCloseBtn.addEventListener('click', closeDongPhuOverlay);
     }
@@ -387,9 +558,11 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(` ${areaName}`);
     };
 
+    updateCurrencyBar();
     renderAvatar();
     updateToggleUI();
     setupAvatarClickEvent();
+    updatePlayerInfo();
 });
 
 window.addEventListener('load', () => {
